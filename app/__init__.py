@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_script import Manager
@@ -36,4 +36,4 @@ from app.controllers import pessoas
 
 @app.route("/home")
 def home():
-    return "<h1>Pagina inicial</h1>"
+    return render_template("home.html")

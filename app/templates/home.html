@@ -1,4 +1,25 @@
-<p>Teste de login</p>
-
-
-<p>voce não está logado</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+</head>
+<body>
+    <header class="text-light bg-primary">
+        <div class="container">
+            <div class="d-flex justify-content-between">
+                <h1>Gereciamento Escolar</h1>
+                {% if current_user.is_authenticated %}
+                <div>
+                    Olá, {{ current_user.nome }}
+                    <a href="/logout" class="link-light">Sair</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+</body>
+</html>
