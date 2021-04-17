@@ -12,8 +12,32 @@ def get_pessoa(pessoa_id):
     return Pessoa.query.filter_by(id=pessoa_id).first()
 
 
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "GET":
+        mensagem = request.args.get("mensagem")
+        return render_template("login.html", mensagem=mensagem)
+
+    if request.method == "POST":
+        email = request.form["email"]
+        senha = request.form["senha"]
+
+        pessoa = Pessoa.query.filter_by(email=email).first()
+        auth = False
+
+        if pessoa:
+            auth = bcrypt.checkpw(senha.encode("utf-8"), pessoa.senha.encode("utf-8"))
+
+        if not pessoa or not auth:
+            mensagem = "E-mail ou senha inválidos"
+            return render_template("login.html", mensagem=mensagem)
+        else:
+            login_user(pessoa)
+            return redirect("/home")
+
+
 @app.route("/cadastro", methods=["GET", "POST"])
-def register():
+def cadastro():
     if request.method == "POST":
         nome = request.form["name"]
         email = request.form["email"]
@@ -33,3 +57,14 @@ def register():
         db.session.commit()
 
     return render_template("register.html")
+
+
+@app.route("/logout")
+def logout():
+    logout_user()
+    return redirect("/login")
+
+
+@login_manager.unauthorized_handler
+def nao_autorizado():
+    return redirect(url_for("login", mensagem="Faça login para acessar este recurso"))
