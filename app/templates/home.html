@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -10,7 +11,7 @@
 </head>
 
 <body>
-    <header class="text-light bg-primary">
+    <header class="text-light bg-info">
         <div class="container">
             <div class="d-flex justify-content-between">
                 <h1>Gerenciamento de processos</h1>
@@ -26,3 +27,19 @@
 </body>
 
 </html>
+=======
+{% extends "base.html" %}
+{% block conteudo %}
+<div>
+    <h2 >Pesquisa de processos</h2>
+    <div>
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Ex: 5591/2021" aria-label="Recipient's username" aria-describedby="basic-addon2">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button"><img src="/static/imgs/icone_pesquisar.png" width=20 height=20></button>
+              </div>
+          </div>
+    </div>
+</div>
+{% endblock %}
+>>>>>>> 30e14793b4b19e2db8138311f11618799548686e

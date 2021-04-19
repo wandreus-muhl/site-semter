@@ -16,6 +16,20 @@ class Pessoa(db.Model, UserMixin):
     def __repr__(self):
         return "<Pessoa %s>" % self.nome
 
+    def is_authenticated(self):
+        return True
+
+    def is_active(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return self.id
+    
+    def get_nome(self):
+        return self.nome
 
 class Servidor(db.Model, UserMixin):
     __tablename__ = "servidores"
