@@ -20,7 +20,7 @@ def login():
 
     if request.method == "POST":
         email = request.form["email"]
-        senha = request.form["senha"]
+        senha = request.form["password"]
 
         pessoa = Pessoa.query.filter_by(email=email).first()
         auth = False
