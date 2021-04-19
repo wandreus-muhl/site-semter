@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -6,40 +5,26 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Meus processos</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
 </head>
 
 <body>
-    <header class="text-light bg-info">
-        <div class="container">
-            <div class="d-flex justify-content-between">
-                <h1>Gerenciamento de processos</h1>
-                {% if current_user.is_authenticated %}
-                <div>
-                    Olá, {{ current_user.nome }}
-                    <a href="/logout" class="link-light">Sair</a>
-                </div>
-                {% endif %}
+    {% extends "base.html" %}
+    {% block conteudo %}
+    <h2>Pesquisa de processos</h2>
+    <div class="mb-3 text-secondary">
+        <label for="search" class="form-label">Número do processo</label>
+        <div class="input-group">
+            <input type="text" name="search" id="search" class="form-control" placeholder="Ex: 5591/2021">
+            <div class="input-group-btn">
+                <button class="btn btn-outline-secondary" type="submit">
+                    <i class="bi bi-search"></i>
+                </button>
             </div>
         </div>
-    </header>
+    </div>
+    {% endblock %}
 </body>
 
 </html>
-=======
-{% extends "base.html" %}
-{% block conteudo %}
-<div>
-    <h2 >Pesquisa de processos</h2>
-    <div>
-        <div class="input-group mb-3">
-            <input type="text" class="form-control" placeholder="Ex: 5591/2021" aria-label="Recipient's username" aria-describedby="basic-addon2">
-            <div class="input-group-append">
-                <button class="btn btn-outline-secondary" type="button"><img src="/static/imgs/icone_pesquisar.png" width=20 height=20></button>
-              </div>
-          </div>
-    </div>
-</div>
-{% endblock %}
->>>>>>> 30e14793b4b19e2db8138311f11618799548686e
