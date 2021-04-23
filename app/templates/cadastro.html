@@ -1,7 +1,61 @@
-<form action="" method="post">
-    <input type="text" name="name" placeholder="Insira seu nome">
-    <input type="email" name="email" placeholder="Insira seu e-mail">
-    <input type="password" name="password" placeholder="Insira sua senha">
-    <input type="text" name="telNumber" placeholder="(XX) XXXXX-XXXX">
-    <input type="submit" value="Cadastrar">
-</form>
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css">
+    <title>Cadastrar</title>
+</head>
+
+<body>
+    {% extends "base.html" %}
+    {% block conteudo %}
+    <div class="container">
+        <div class="text-center pt-5">
+            <label for="textTitle">Crie uma conta</label>
+        </div>
+        <div class="d-flex justify-content-center pt-5">
+            <form action="/home" class="form">
+                <div>
+                    <label for="inputCpf">CPF</label>
+                    <input type="text" class="form-control" name="cpf" placeholder="000.000.000-00">
+                </div>
+                <div>
+                    <label for="inputEmail">Email</label>
+                    <input type="email" class="form-control" name="email" placeholder="Insira seu e-mail">
+                </div>
+                <div>
+                    <label for="inputPassWord">Senha</label>
+                    <input type="password" class="form-control" name="password1" placeholder="Insira sua senha">
+                </div>
+                <div>
+                    <label for="inputPassWordConfirm">Confirmar enha</label>
+                    <input type="password" class="form-control" name="password2" placeholder="Confirme sua senha">
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                    <p>
+                        <small>
+                            Concordo com os <a class="stretched-link">Termos de Serviço</a> e com a <a
+                                class="stretched-link">Política de Privacidade</a>
+                        </small>
+                    </p>
+                </div>
+                <div class="d-flex justify-content-center pt-3">
+                    <button type="button" class="btn btn-primary">CADASTRE-SE</button>
+                </div>
+                <p class="d-flex justify-content-center pt-1">
+                    <small>
+                        Já possui uma conta? <a href="/login" class="stretched-link">Faça login</a>
+                    </small>
+                </p>
+            </form>
+        </div>
+        {% endblock %}
+</body>
+
+</html>
