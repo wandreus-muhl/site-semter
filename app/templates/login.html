@@ -1,55 +1,39 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css">
-    <title>Login</title>
-</head>
-
-<body>
-    <div class="container">
-        <div class="row justify-content-center mt-5">
-            <div class="col-lg-4 col-md-6 col-sm-6">
-                <div class="card shadow mt-5">
-                    <div class="card-title text-center">
-                        <i class="bi bi-person-circle text-info" style="font-size: 100px;"></i>
+{% extends "base.html" %}
+{% block conteudo %}
+<div class="row justify-content-center mt-5">
+    <div class="col-lg-4 col-md-6 col-sm-6">
+        <div class="card shadow">
+            <div class="card-title text-center">
+                <i class="bi bi-person-circle text-info" style="font-size: 100px;"></i>
+            </div>
+            <div class="card-body mt-lg-2">
+                <form action="/login" method="POST" class="form">
+                    <div class="mb-3 text-secondary">
+                        <i class="bi bi-person-fill"></i>
+                        <label for="inputEmail" class="form-label">Endereço de email</label>
+                        <input type="email" name="inputEmail" id="inputEmail" class="form-control">
                     </div>
-                    <div class="card-body mt-lg-2">
-                        <form action="/login" method="POST" class="form">
-                            <div class="mb-3 text-secondary">
-                                <i class="bi bi-person-fill"></i>
-                                <label for="email" class="form-label">Endereço de email</label>
-                                <input type="email" name="email" id="email" class="form-control">
-                            </div>
-                            <div class="mb-3 text-secondary">
-                                <i class="bi bi-key-fill"></i>
-                                <label for="password" class="form-label">Senha</label>
-                                <input type="password" name="password" id="password" class="form-control">
-                            </div>
-                            <div class="d-flex justify-content-between form-group">
-                                {% if mensagem %}
-                                <div class="form-text text-danger"><i class="bi bi-exclamation-circle"></i>
-                                    {{mensagem}}</div>
-                                {% endif %}
-                                <a href="/esqueci-minha-senha" class="form-text text-decoration-none">Esqueceu a
-                                    senha?</a>
-                            </div>
-                            <div class="d-grid gap-2 col-8 mx-auto mt-lg-5">
-                                <input type="submit" value="Login"
-                                    class="btn btn-info text-light text-uppercase fs-5"></input>
-                            </div>
-                            <p class="form-text text-center">Não tem uma conta? <a href="/cadastro"
-                                    class="text-info text-decoration-none">Cadastre-se</a></p>
+                    <div class="mb-3 text-secondary">
+                        <i class="bi bi-key-fill"></i>
+                        <label for="inputPassword" class="form-label">Senha</label>
+                        <input type="password" name="inputPassword" id="inputPassword" class="form-control">
                     </div>
-                    </form>
-                </div>
+                    <div class="d-flex justify-content-between form-group">
+                        {% if mensagem %}
+                        <div class="form-text text-danger"><i class="bi bi-exclamation-circle"></i>
+                            {{mensagem}}</div>
+                        {% endif %}
+                        <a href="/esqueci-minha-senha" class="form-text text-decoration-none">Esqueceu a
+                            senha?</a>
+                    </div>
+                    <div class="d-grid gap-2 col-8 mx-auto mt-lg-5">
+                        <input type="submit" value="Login" class="btn btn-info text-light text-uppercase fs-5"></input>
+                    </div>
+                    <p class="form-text text-center">Não tem uma conta? <a href="/cadastro"
+                            class="text-info text-decoration-none">Cadastre-se</a></p>
+                </form>
             </div>
         </div>
     </div>
-</body>
-
-</html>
+</div>
+{% endblock %}

@@ -19,8 +19,8 @@ def login():
         return render_template("login.html", mensagem=mensagem)
 
     if request.method == "POST":
-        email = request.form["email"]
-        senha = request.form["password"]
+        email = request.form["inputEmail"]
+        senha = request.form["inputPassword"]
 
         pessoa = Pessoa.query.filter_by(email=email).first()
         auth = False
@@ -39,18 +39,25 @@ def login():
 @app.route("/cadastro", methods=["GET", "POST"])
 def cadastro():
     if request.method == "GET":
+        mensagem = request.args.get("mensagem")
         return render_template("cadastro.html")
 
     if request.method == "POST":
-        nome = request.form["name"]
-        email = request.form["email"]
-        senha = request.form["password"]
+        nome = request.form["inputName"]
+        cpf = request.form["inputCPF"]
+        email = request.form["inputEmail"]
+        if request.form["inputPassword"] == request.form["inputPasswordConfirm"]:
+            senha = request.form["inputPassword"]
+        else:
+            mensagem = "As senhas não correspondem"
+            return render_template("cadastro.html", mensagem=mensagem)
         senhaEcriptada = bcrypt.hashpw(senha.encode("UTF-8"), bcrypt.gensalt())
-        contato = request.form["telNumber"]
+        contato = request.form["inputPhone"]
         data_cadastro = date.today()
 
         pessoa = Pessoa(
             nome=nome,
+            cpf=cpf,
             email=email,
             senha=senhaEcriptada,
             contato=contato,
@@ -70,9 +77,11 @@ def logout():
 
 @login_manager.unauthorized_handler
 def nao_autorizado():
-    return redirect(url_for("login", mensagem="Este recurso estará disponível após o login"))
+    return redirect(
+        url_for("login", mensagem="Este recurso estará disponível após o login")
+    )
 
 
 @app.route("/pesquisa")
 def pesquisa():
-        return render_template("pesquisa.html")
+    return render_template("pesquisa.html")

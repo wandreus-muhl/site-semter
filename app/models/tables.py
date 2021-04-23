@@ -8,6 +8,7 @@ class Pessoa(db.Model, UserMixin):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     nome = db.Column(db.String(200), nullable=False)
+    cpf = db.Column(db.String(11), nullable=False, unique=True)
     email = db.Column(db.String(200), nullable=False, unique=True)
     senha = db.Column(db.String(200), nullable=False)
     contato = db.Column(db.String(45))
@@ -27,9 +28,10 @@ class Pessoa(db.Model, UserMixin):
 
     def get_id(self):
         return self.id
-    
+
     def get_nome(self):
         return self.nome
+
 
 class Servidor(db.Model, UserMixin):
     __tablename__ = "servidores"
@@ -42,6 +44,7 @@ class Servidor(db.Model, UserMixin):
     def _repr_(self):
         return "<Servidor %d>" % self.matricula
 
+
 class Contribuinte(db.Model):
     __tablename__ = "contribuintes"
 
@@ -52,6 +55,7 @@ class Contribuinte(db.Model):
 
     def _repr_(self):
         return "<Contribuinte %d>" % self.cpf
+
 
 class Status(db.Model):
     __tablename__ = "status"
@@ -64,6 +68,7 @@ class Status(db.Model):
     def _repr_(self):
         return "<Status tipo %s>" % self.nome
 
+
 class Processo(db.Model):
     __tablename__ = "processos"
 
@@ -75,8 +80,12 @@ class Processo(db.Model):
     data_final = db.Column(db.DateTime, nullable=False)
     parecer = db.Column(db.String(250))
     servidor_id = db.Column(db.Integer, db.ForeignKey("servidores.id"), nullable=False)
-    contribuinte_id = db.Column(db.Integer, db.ForeignKey("contribuintes.id"), nullable=False)
-    status_id = db.Column(db.Integer, db.ForeignKey("status.id"), default="0") #Quando tiver o status certo de encaminhado, colocar aqui!
+    contribuinte_id = db.Column(
+        db.Integer, db.ForeignKey("contribuintes.id"), nullable=False
+    )
+    status_id = db.Column(
+        db.Integer, db.ForeignKey("status.id"), default="0"
+    )  # Quando tiver o status certo de encaminhado, colocar aqui!
 
     def _repr_(self):
         return "<Processo %d>" % self.cod_processo
