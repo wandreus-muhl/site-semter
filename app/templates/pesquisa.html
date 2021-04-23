@@ -1,0 +1,15 @@
+    {% extends "base.html" %}
+    {% block conteudo %}
+    <h2>Pesquisa de processos</h2>
+    <div class="mb-3 text-secondary">
+        <label for="search" class="form-label">Número do processo</label>
+        <div class="input-group">
+            <input type="text" name="search" id="search" class="form-control" placeholder="Ex: 5591/2021">
+            <div class="input-group-btn">
+                <button class="btn btn-outline-secondary" type="submit">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    {% endblock %}

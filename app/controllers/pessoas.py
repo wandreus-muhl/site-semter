@@ -38,6 +38,9 @@ def login():
 
 @app.route("/cadastro", methods=["GET", "POST"])
 def cadastro():
+    if request.method == "GET":
+        return render_template("cadastro.html")
+
     if request.method == "POST":
         nome = request.form["name"]
         email = request.form["email"]
@@ -56,7 +59,7 @@ def cadastro():
         db.session.add(pessoa)
         db.session.commit()
 
-    return render_template("register.html")
+    return redirect("/login")
 
 
 @app.route("/logout")
@@ -67,4 +70,9 @@ def logout():
 
 @login_manager.unauthorized_handler
 def nao_autorizado():
-    return redirect(url_for("login", mensagem="Faça login para acessar este recurso"))
+    return redirect(url_for("login", mensagem="Este recurso estará disponível após o login"))
+
+
+@app.route("/pesquisa")
+def pesquisa():
+        return render_template("pesquisa.html")
