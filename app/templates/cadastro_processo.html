@@ -1,0 +1,27 @@
+<title>Cadastro processual</title>
+{% extends "base.html" %}
+{% block conteudo %}
+<div class="row justify-content-center mt-3">
+    <div class="col-lg-6 col-md-8 col-sm-8">
+        <div class="card shadow">
+            <div class="card-title text-center">
+                <h1 class="h1">Cadastre um processo</h1>
+            </div>
+            <div class="card-body mt-lg-2">
+                <form action="/processos">
+                    <div class="mb-1 text-secondary">
+                        <i class="bi bi-person-fill"></i>
+                        <label for="inputName" class="form-label">Código do processo</label>
+                        <input type="text" name="inputName" id="inputName" class="form-control form-control-line">
+                    </div>
+                    <div class="mb-1 text-secondary">
+                        <i class="bi bi-person-fill"></i>
+                        <label for="inputName" class="form-label">Requerimento</label>
+                        <input type="file" name="inputFileRequerimento" id="inputFileRequerimento" class="form-control form-control-line">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

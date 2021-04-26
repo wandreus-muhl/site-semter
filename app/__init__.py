@@ -32,6 +32,7 @@ login_manager = LoginManager(app)
 login_manager.init_app(app)
 
 from app.controllers import pessoas
+from app.controllers import processos
 
 
 @app.route("/home")
