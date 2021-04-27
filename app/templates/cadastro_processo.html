@@ -6,7 +6,9 @@
         <div class="card shadow">
             <div class="card-title text-center">
                 <h1 class="h1 mt-4">Cadastre um processo</h1>
-                <p>Duvidas sobre a documentação? <a href="*">Clique aqui!</a></p>
+                <p>Duvidas sobre a documentação?<button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#modalDocumentacao">
+                    Clique aqui!
+                  </button>
             </div>
             <div class="card-body mt-lg-2">
                 <form action="/processos">
@@ -62,6 +64,33 @@
                             class="btn btn-info text-light text-uppercase fs-5"></input>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="modalDocumentacao" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <h5 class="modal-title m-3">Documentação necessária para a abertura do processo na Secretaria de Terras</h5>
+            <ul class="list-group">
+                <li class="list-group-item">Requerimento</li>
+                <li class="list-group-item">Certidão Negativa Prefeitura e SAAE </li>
+                <li class="list-group-item">Título do imóvel</li>
+                <li class="list-group-item">Documentação da empresa (PJ)</li>
+                <li class="list-group-item">Cópia de RG e CPF do proprietário ou representante legal</li>
+                <li class="list-group-item">Cópia do comprovante de residência proprietário ou representante legal</li>
+                <li class="list-group-item">Procuração com poderes específicos</li>
+            </ul>
+            <h5 class="modal-title m-3">Documentação de análise técnica</h5>
+            <ul class="list-group">
+                <li class="list-group-item">Planta/selo em formato e escala adequados e assinados</li>
+                <li class="list-group-item">Elementos do projeto legíveis e corretos (cotas, texto, indicação norte, nome das rutas, lotes confrontantes, etc)</li>
+                <li class="list-group-item">Dados e dimensões do imóvel e confrontações de acordo com o título</li>
+                <li class="list-group-item">Proposta de subdivisão/unificação que atende a legislação vigente</li>
+            </ul>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-bs-dismiss="modal">Entendi</button>
             </div>
         </div>
     </div>
