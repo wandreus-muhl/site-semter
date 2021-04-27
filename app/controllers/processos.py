@@ -2,7 +2,7 @@ from app import app, db, login_manager
 from flask import render_template, redirect, url_for, request
 from flask_login import login_required
 from flask_login import login_user, logout_user
-from app.models.tables import Pessoa, Processo
+from app.models.tables import Pessoa, Processo, Contribuinte
 from datetime import date
 import bcrypt
 
@@ -18,12 +18,13 @@ def cadastrar_processos():
         return render_template("cadastro_processo.html")
 
     if request.method == "POST":
+        
         nome = request.form["inputName"]
         numero = request.form["inputNumber"]
         tipo_processo = request.form["inputKind"]
         tipo_lote = request.form["inputType"]
         data_inicio = date.today()
-        contribuinte_id = current_user.id
+        contribuinte_id = 1 #Só falta fazer como define o contribuinte pelo ID do current_user
 
         processo = Processo(
             nome=nome,
@@ -31,9 +32,10 @@ def cadastrar_processos():
             tipo_processo=tipo_processo,
             tipo_lote=tipo_lote,
             data_inicio=data_inicio,
-            contribuinte_id=contribuinte_id,
+            contribuinte_id=contribuinte_id
         )
         db.session.add(processo)
         db.session.commit()
 
     return redirect("/home")
+

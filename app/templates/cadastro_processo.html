@@ -12,7 +12,7 @@
                     </button>
             </div>
             <div class="card-body mt-lg-2">
-                <form action="/novo_processo ">
+                <form action="/novo_processo" method="POST" class="form">
                     <div class="row g-3 text-secondary">
                         <div class="col">
                             <i class="bi bi-pencil-square"></i>
@@ -31,18 +31,18 @@
                         <div class="col">
                             <i class="bi bi-input-cursor"></i>
                             <label for="inputKind" class="form-label">Natureza da requisição</label>
-                            <select class="form-select text-secondary" aria-label="Default select example">
+                            <select class="form-select text-secondary" aria-label="Default select example" name="inputKind" id="inputKind">
                                 <option selected>Selecionar Natureza</option>
-                                <option value="desmembramento">Desmembramento</option>
-                                <option value="unificacao">Unificação</option>
+                                <option value="Desmembramento">Desmembramento</option>
+                                <option value="Unificação">Unificação</option>
                             </select>
                         </div>
                         <div class="col">
                             <i class="bi bi-house-fill"></i>
                             <label for="inputType" class="form-label">Tipo de imóvel</label>
-                            <select class="form-select text-secondary" aria-label="Default select example">
-                                <option selected>Lote urbano</option>
-                                <option >Chácara</option>
+                            <select class="form-select text-secondary" aria-label="Default select example" name="inputType" id="inputType">
+                                <option selected value="Lote Urbano">Lote Urbano</option>
+                                <option value="Chácara">Chácara</option>
                             </select>
                         </div>
                     </div>
@@ -50,13 +50,13 @@
                     <div class="text-secondary">
                         <i class="bi bi-file-earmark-arrow-up-fill"></i>
                         <label for="inputFileDocumentacao" class="form-label">Documentação</label>
-                        <input type="file" name="inputFileDocumentacao" id="inputFileDocumentacao"
+                        <input type="file" 
                             class="form-control form-control-file">
                     </div>
                     <div class="text-secondary mt-4">
                         <i class="bi bi-file-earmark-arrow-up-fill"></i>
                         <label for="inputFileAnalises" class="form-label">Análises técnicas</label>
-                        <input type="file" name="inputFileAnalises" id="inputFileAnalises"
+                        <input type="file" 
                             class="form-control form-control-file">
                     </div>
                     <div class="d-grid gap-2 col-8 mx-auto mt-4">
@@ -97,4 +97,11 @@
         </div>
     </div>
 </div>
+<script>
+    let idUsuario = 0
+
+    function setId(id){
+        idUsuario = id
+    }
+</script>
 {% endblock %}

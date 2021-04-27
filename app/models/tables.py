@@ -85,7 +85,7 @@ class Processo(db.Model):
         db.Integer, db.ForeignKey("contribuintes.id"), nullable=False
     )
     status_id = db.Column(
-        db.Integer, db.ForeignKey("status.id"), default="0"
+        db.Integer, db.ForeignKey("status.id"), default="1"
     )  # Quando tiver o status certo de encaminhado, colocar aqui!
 
     def _repr_(self):

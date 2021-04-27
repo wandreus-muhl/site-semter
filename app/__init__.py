@@ -4,10 +4,12 @@ from flask_login import LoginManager
 from flask_script import Manager
 from flask_migrate import Migrate, MigrateCommand
 
-import os
+import os, logging
 from dotenv import load_dotenv
 
 load_dotenv()
+
+logging.basicConfig(filename="access.log", format="%(asctime)s - %(levelname)s - %(message)s")
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = (
