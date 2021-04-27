@@ -33,8 +33,3 @@ login_manager.init_app(app)
 
 from app.controllers import pessoas
 from app.controllers import processos
-
-
-@app.route("/home")
-def home():
-    return render_template("home.html")

@@ -6,12 +6,13 @@
         <div class="card shadow">
             <div class="card-title text-center">
                 <h1 class="h1 mt-4">Cadastre um processo</h1>
-                <p>Duvidas sobre a documentação?<button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#modalDocumentacao">
-                    Clique aqui!
-                  </button>
+                <p>Duvidas sobre a documentação?<button type="button" class="btn btn-link" data-bs-toggle="modal"
+                        data-bs-target="#modalDocumentacao">
+                        Clique aqui!
+                    </button>
             </div>
             <div class="card-body mt-lg-2">
-                <form action="/processos">
+                <form action="/novo_processo ">
                     <div class="row g-3 text-secondary">
                         <div class="col">
                             <i class="bi bi-pencil-square"></i>
@@ -20,17 +21,16 @@
                         </div>
                         <div class="col">
                             <i class="bi bi-pencil-square"></i>
-                            <label for="inputName" class="form-label">Descrição do Imóvel</label>
-                            <input type="text" placeholder="Número" name="inputName" id="inputNumero"
+                            <label for="inputNumber" class="form-label">Número do Imóvel</label>
+                            <input type="number" placeholder="Número" name="inputNumber" id="inputNumero"
                                 class="form-control">
-                            
                         </div>
                     </div>
                     <hr class="mt-4">
                     <div class="row g-3 text-secondary">
                         <div class="col">
                             <i class="bi bi-input-cursor"></i>
-                            <label for="inputName" class="form-label">Natureza da requisição</label>
+                            <label for="inputKind" class="form-label">Natureza da requisição</label>
                             <select class="form-select text-secondary" aria-label="Default select example">
                                 <option selected>Selecionar Natureza</option>
                                 <option value="desmembramento">Desmembramento</option>
@@ -39,10 +39,10 @@
                         </div>
                         <div class="col">
                             <i class="bi bi-house-fill"></i>
-                            <label for="inputName" class="form-label">Tipo de imóvel</label>
+                            <label for="inputType" class="form-label">Tipo de imóvel</label>
                             <select class="form-select text-secondary" aria-label="Default select example">
                                 <option selected>Lote urbano</option>
-                                <option value="desmembramento">Chácara</option>
+                                <option >Chácara</option>
                             </select>
                         </div>
                     </div>
@@ -69,7 +69,8 @@
     </div>
 </div>
 
-<div class="modal fade bd-example-modal-lg" id="modalDocumentacao" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade bd-example-modal-lg" id="modalDocumentacao" data-bs-backdrop="static" data-bs-keyboard="false"
+    tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <h5 class="modal-title m-3">Documentação necessária para a abertura do processo na Secretaria de Terras</h5>
@@ -85,7 +86,8 @@
             <h5 class="modal-title m-3">Documentação de análise técnica</h5>
             <ul class="list-group">
                 <li class="list-group-item">Planta/selo em formato e escala adequados e assinados</li>
-                <li class="list-group-item">Elementos do projeto legíveis e corretos (cotas, texto, indicação norte, nome das rutas, lotes confrontantes, etc)</li>
+                <li class="list-group-item">Elementos do projeto legíveis e corretos (cotas, texto, indicação norte,
+                    nome das rutas, lotes confrontantes, etc)</li>
                 <li class="list-group-item">Dados e dimensões do imóvel e confrontações de acordo com o título</li>
                 <li class="list-group-item">Proposta de subdivisão/unificação que atende a legislação vigente</li>
             </ul>

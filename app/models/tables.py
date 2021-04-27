@@ -8,7 +8,7 @@ class Pessoa(db.Model, UserMixin):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     nome = db.Column(db.String(200), nullable=False)
-    cpf = db.Column(db.String(11), nullable=False, unique=True)
+    cpf = db.Column(db.String(14), nullable=False, unique=True)
     email = db.Column(db.String(200), nullable=False, unique=True)
     senha = db.Column(db.String(200), nullable=False)
     contato = db.Column(db.String(45))
@@ -73,13 +73,14 @@ class Processo(db.Model):
     __tablename__ = "processos"
 
     id = db.Column(db.Integer, primary_key=True)
-    cod_processo = db.Column(db.String(45), nullable=False, index=True, unique=True)
-    descricao = db.Column(db.String(250))
+    nome = db.Column(db.String(250))
+    numero = db.Column(db.Integer, nullable=False)
     tipo_processo = db.Column(db.String(250), nullable=False)
+    tipo_lote = db.Column(db.String(250), nullable=False)
     data_inicio = db.Column(db.DateTime, nullable=False)
-    data_final = db.Column(db.DateTime, nullable=False)
+    data_final = db.Column(db.DateTime)
     parecer = db.Column(db.String(250))
-    servidor_id = db.Column(db.Integer, db.ForeignKey("servidores.id"), nullable=False)
+    servidor_id = db.Column(db.Integer, db.ForeignKey("servidores.id"))
     contribuinte_id = db.Column(
         db.Integer, db.ForeignKey("contribuintes.id"), nullable=False
     )

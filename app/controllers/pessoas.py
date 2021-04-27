@@ -2,7 +2,7 @@ from app import app, db, login_manager
 from flask import render_template, redirect, url_for, request
 from flask_login import login_required
 from flask_login import login_user, logout_user
-from app.models.tables import Pessoa
+from app.models.tables import Pessoa, Processo
 from datetime import date
 import bcrypt
 
@@ -37,6 +37,7 @@ def login():
 
 
 @app.route("/cadastro", methods=["GET", "POST"])
+@login_required
 def cadastro():
     if request.method == "GET":
         mensagem = request.args.get("mensagem")
@@ -80,6 +81,14 @@ def nao_autorizado():
     return redirect(
         url_for("login", mensagem="Este recurso estará disponível após o login")
     )
+
+
+@app.route("/home")
+@login_required
+def listarProcessos():
+    processos = Processo.query.filter(Processo.contribuinte_id.like(1))
+
+    return render_template("home.html", lista=processos)
 
 
 @app.route("/pesquisa")
