@@ -5,18 +5,29 @@
     <div class="col-lg-6 col-md-8 col-sm-8">
         <div class="card shadow">
             <div class="card-title text-center">
-                <h1 class="h1">Cadastre um processo</h1>
+                <h1 class="h1 mt-4">Cadastre um processo</h1>
+                <p>Duvidas sobre a documentação? <a href="*">Clique aqui!</a></p>
             </div>
             <div class="card-body mt-lg-2">
                 <form action="/processos">
                     <div class="row g-3 text-secondary">
                         <div class="col">
-                            <i class="bi bi-person-fill"></i>
+                            <i class="bi bi-pencil-square"></i>
                             <label for="inputName" class="form-label">Nome da requisição</label>
                             <input type="text" placeholder="Nome" name="inputName" id="inputName" class="form-control">
                         </div>
                         <div class="col">
-                            <i class="bi bi-file-earmark-arrow-up-fill"></i>
+                            <i class="bi bi-pencil-square"></i>
+                            <label for="inputName" class="form-label">Descrição do Imóvel</label>
+                            <input type="text" placeholder="Número" name="inputName" id="inputNumero"
+                                class="form-control">
+                            
+                        </div>
+                    </div>
+                    <hr class="mt-4">
+                    <div class="row g-3 text-secondary">
+                        <div class="col">
+                            <i class="bi bi-input-cursor"></i>
                             <label for="inputName" class="form-label">Natureza da requisição</label>
                             <select class="form-select text-secondary" aria-label="Default select example">
                                 <option selected>Selecionar Natureza</option>
@@ -24,35 +35,26 @@
                                 <option value="unificacao">Unificação</option>
                             </select>
                         </div>
-                    </div>
-                    <hr class="mt-4">
-                    <div class="row g-3 text-secondary">
                         <div class="col">
                             <i class="bi bi-house-fill"></i>
-                            <label for="inputName" class="form-label">CEP do Imóvel</label>
-                            <input type="text" placeholder="CEP" name="inputName" id="inputCEP" class="form-control">
-                        </div>
-                        <div class="col">
-                            <i class="bi bi-person-fill"></i>
-                            <label for="inputName" class="form-label">Número do Imóvel</label>
-                            <input type="text" placeholder="Número" name="inputName" id="inputNumero"
-                                class="form-control">
-                        </div>
-                    </div>
-                    <hr class="mt-4">
-                    <div class="row g-3 text-secondary">
-                        <div class="col">
-                            <i class="bi bi-person-fill"></i>
-                            <label for="inputName" class="form-label">CPF da outra parte</label>
-                            <input type="text" placeholder="CPF" placeholder="Número" name="inputName" id="inputCEP"
-                                class="form-control">
+                            <label for="inputName" class="form-label">Tipo de imóvel</label>
+                            <select class="form-select text-secondary" aria-label="Default select example">
+                                <option selected>Lote urbano</option>
+                                <option value="desmembramento">Chácara</option>
+                            </select>
                         </div>
                     </div>
                     <hr class="mt-4">
                     <div class="text-secondary">
                         <i class="bi bi-file-earmark-arrow-up-fill"></i>
-                        <label for="inputName" class="form-label">Requerimento</label>
-                        <input type="file" name="inputFileRequerimento" id="inputFileRequerimento"
+                        <label for="inputFileDocumentacao" class="form-label">Documentação</label>
+                        <input type="file" name="inputFileDocumentacao" id="inputFileDocumentacao"
+                            class="form-control form-control-file">
+                    </div>
+                    <div class="text-secondary mt-4">
+                        <i class="bi bi-file-earmark-arrow-up-fill"></i>
+                        <label for="inputFileAnalises" class="form-label">Análises técnicas</label>
+                        <input type="file" name="inputFileAnalises" id="inputFileAnalises"
                             class="form-control form-control-file">
                     </div>
                     <div class="d-grid gap-2 col-8 mx-auto mt-4">
