@@ -37,7 +37,6 @@ def login():
 
 
 @app.route("/cadastro", methods=["GET", "POST"])
-@login_required
 def cadastro():
     if request.method == "GET":
         mensagem = request.args.get("mensagem")
