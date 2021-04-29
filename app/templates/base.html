@@ -27,7 +27,7 @@
         </div>
     </header>
     <main class="container">
-        <label class="invisible" id="getUserID" name="getUserID">{{ current_user.id }}</label>
+        <input type="hidden" id="getUserID" name="getUserID" value="{{ current_user.id }}">
         {% block conteudo %}
         {% endblock %}
     </main>
