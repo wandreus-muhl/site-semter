@@ -1,3 +1,9 @@
 .capitalized {
 	text-transform: capitalize;
 }
+.cursor-pointer {
+	cursor: pointer;
+}
+.invisible {
+	display: none;
+}

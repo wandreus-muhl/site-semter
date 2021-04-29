@@ -14,9 +14,9 @@
             <div class="d-flex justify-content-between">
                 <h1>Secretaria de Terras</h1>
                 {% if current_user.is_authenticated %}
-                <div>
-                    Olá, {{ current_user.nome }} com id {{ current_user.id }}
-                    <a href="/logout" class="link-light">Sair</a>
+                <div class="d-flex flex-nowrap align-self-center">
+                    <p>Olá, {{ current_user.nome }}</p>
+                    <a href="/logout" class="text-light currsor-pointer"> Sair</a>
                 </div>
                 {% else %}
                 <div>
@@ -27,6 +27,7 @@
         </div>
     </header>
     <main class="container">
+        <label class="invisible" id="getUserID" name="getUserID">{{ current_user.id }}</label>
         {% block conteudo %}
         {% endblock %}
     </main>

@@ -20,7 +20,7 @@ def cadastrar_processos():
         tipo_processo = request.form["inputKind"]
         tipo_lote = request.form["inputType"]
         data_inicio = date.today()
-        contribuinte_id = 1
+        contribuinte_id = request.form["getUserID"]
 
         processo = Processo(
             nome=nome,
