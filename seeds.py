@@ -23,3 +23,7 @@ import bcrypt
 # p1 = Processo(nome="Minha casa", numero=2620, tipo_processo="Desmembramento", tipo_lote="Lote Urbano", data_inicio=date.today(), contribuinte_id=1)
 # db.session.add(p1)
 # db.session.commit()
+
+# c1 = Contribuinte(cpf=12345656710, pessoa_id=5)
+# db.session.add(c1)
+# db.session.commit()

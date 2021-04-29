@@ -3,7 +3,7 @@ from flask import render_template, redirect, url_for, request
 from flask_login import login_required
 from flask_login import login_user, logout_user
 from app.models.tables import Pessoa, Processo
-from datetime import date
+from datetime import datetime
 import bcrypt
 
 
@@ -53,7 +53,7 @@ def cadastro():
             return render_template("cadastro.html", mensagem=mensagem)
         senhaEcriptada = bcrypt.hashpw(senha.encode("UTF-8"), bcrypt.gensalt())
         contato = request.form["inputPhone"]
-        data_cadastro = date.today()
+        data_cadastro = datetime.now()
 
         pessoa = Pessoa(
             nome=nome,
