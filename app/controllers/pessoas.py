@@ -1,8 +1,8 @@
 from app import app, db, login_manager
-from flask import render_template, redirect, url_for, request
+from flask import render_template, redirect, url_for, request, session
 from flask_login import login_required
 from flask_login import login_user, logout_user
-from app.models.tables import Pessoa, Processo
+from app.models.tables import Pessoa, Processo, Contribuinte
 from datetime import datetime
 import bcrypt
 
@@ -85,9 +85,19 @@ def nao_autorizado():
 @app.route("/home")
 @login_required
 def listarProcessos():
-    processos = Processo.query.filter(Processo.contribuinte_id.like(1))
+    
+    usuario = request.args.get("getUserID")
 
-    return render_template("home.html", lista=processos)
+    if usuario:
+        contribuinte = Contribuinte.query.filter(Contribuinte.pessoa_id.like(usuario)).first()
+        id_contribuinte = contribuinte.id
+        app.logger.info('O seguinte usuário tentou mostrar seus processos: '+ str(id_contribuinte))
+
+        processos = Processo.query.filter(Processo.contribuinte_id.like(id_contribuinte)).all()
+    else: 
+        processos = Processo.query.all()
+
+    return render_template("home.html", processos=processos)
 
 
 @app.route("/pesquisa")

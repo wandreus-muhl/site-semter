@@ -1,17 +1,23 @@
 <title>Meus processos</title>
 {% extends "base.html" %}
 {% block conteudo %}
+<form class="row g-3">
+    <input formmethod="GET" id="getUserID" name="getUserID" value="{{ current_user.id }}">
+</form>
 <div class="card">
     <div class="row">
+        {% for p in processos %}
         <div class="col-sm border-start-5 border-warning">
+            
             <div class="card-title">
-                <h3>   </h3>
+                <h3>{{ p.nome }}</h3>
                 <span>  </span>
             </div>
             <div class="card-body">
-                <p>  </p>
+                <p>{{ p.tipo_processo }}</p>
             </div>
         </div>
+        {% endfor %}
     </div>
 </div>
 <a class="btn btn-info" href="/novo_processo">+</a>
