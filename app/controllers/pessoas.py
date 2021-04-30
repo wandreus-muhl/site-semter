@@ -66,6 +66,13 @@ def cadastro():
         db.session.add(pessoa)
         db.session.commit()
 
+        contribuinte = Contribuinte(
+            cpf=pessoa.cpf,
+            pessoa_id=pessoa.id
+        )
+        db.session.add(contribuinte)
+        db.session.commit()
+
     return redirect("/login")
 
 
@@ -102,4 +109,14 @@ def listarProcessos():
 
 @app.route("/pesquisa")
 def pesquisa():
+    # nome = request.args.get("getUserID")
+
+    # if usuario:
+    #     contribuinte = Contribuinte.query.filter(Contribuinte.pessoa_id.like(usuario)).first()
+    #     id_contribuinte = contribuinte.id
+    #     app.logger.info('O seguinte usuário tentou mostrar seus processos: '+ str(id_contribuinte))
+
+    #     processos = Processo.query.filter(Processo.contribuinte_id.like(id_contribuinte)).all()
+    # else: 
+    #     processos = Processo.query.all()
     return render_template("pesquisa.html")
