@@ -15,7 +15,7 @@ import bcrypt
 # db.session.add(c1)
 # db.session.commit()
 
-# # Criando Status
+# Criando Status
 # s1 = Status(nome="Encaminhado", descricao="Encaminhado ao setor da SEMAD", data_atualizacao=date.today())
 # db.session.add(s1)
 # db.session.commit()
