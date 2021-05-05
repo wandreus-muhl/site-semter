@@ -1,6 +1,6 @@
 from app import app, db, login_manager
 from flask import render_template, redirect, url_for, request, session
-from flask_login import login_required
+from flask_login import login_required, current_user
 from flask_login import login_user, logout_user
 from app.models.tables import Pessoa, Processo, Contribuinte, Servidor
 from datetime import datetime
@@ -142,7 +142,7 @@ def nao_autorizado():
 @login_required
 def listarProcessos():
     
-    usuario = request.args.get("getUserID")
+    usuario = current_user.get_id()
 
     if usuario:
         contribuinte = Contribuinte.query.filter(Contribuinte.pessoa_id.like(usuario)).first()

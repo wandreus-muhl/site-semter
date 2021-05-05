@@ -1,6 +1,6 @@
 from app import app, db, login_manager
 from flask import render_template, redirect, url_for, request, session
-from flask_login import login_required
+from flask_login import login_required, current_user
 from flask_login import login_user, logout_user
 from app.models.tables import Pessoa, Processo, Contribuinte, Status, Servidor
 from datetime import datetime
@@ -21,11 +21,11 @@ def cadastrar_processos():
         tipo_lote = request.form["inputType"]
         data_inicio = datetime.now()
        
-        contribuinte_id = request.form["getUserID"]
+        contribuinte_id = current_user.get_id()
         # Contribuinte.query.filter_by(pessoa_id=contribuinte_id).first()
         contribuinte = Contribuinte.query.filter(Contribuinte.pessoa_id.like(contribuinte_id)).first()
 
-        app.logger.info('O seguinte usuário tentou criar um processo '+contribuinte_id)
+        app.logger.info('O seguinte usuário tentou criar um processo '+str(contribuinte_id))
 
         processo = Processo(
             nome=nome,
@@ -50,7 +50,8 @@ def visualizar_processo(id_processo):
 @app.route("/analise_processo", methods=["GET", "POST"])
 @login_required
 def analisar_processo():
-    usuario = request.args.get("getUserID")
+
+    usuario = current_user.get_id()
 
     if usuario:
         servidor = Servidor.query.filter(Servidor.pessoa_id.like(usuario)).first()
