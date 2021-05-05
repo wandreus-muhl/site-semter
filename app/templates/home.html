@@ -4,6 +4,7 @@
 <div class="row g-2 mb-2 mt-3">
     {% for p in processos %}
     <div class="col-6">
+        <a href="/processo/{{ p.id }}" class="text-decoration-none text-dark">
         <div class="px-2 shadow border-start border-30 border-warning">
             <div class="border-bottom">
                 <h3>{{ p.nome }}</h3>
@@ -11,6 +12,7 @@
             </div>
             <p>{{ p.tipo_processo }}</p>
         </div>
+        </a>
     </div>
     {% endfor %}
 </div>
