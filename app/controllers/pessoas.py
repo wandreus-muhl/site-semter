@@ -2,7 +2,7 @@ from app import app, db, login_manager
 from flask import render_template, redirect, url_for, request, session
 from flask_login import login_required
 from flask_login import login_user, logout_user
-from app.models.tables import Pessoa, Processo, Contribuinte
+from app.models.tables import Pessoa, Processo, Contribuinte, Servidor
 from datetime import datetime
 import bcrypt
 
@@ -75,6 +75,55 @@ def cadastro():
 
     return redirect("/home")
 
+@app.route("/cadastro_servidor", methods=["GET", "POST"])
+def cadastro_servidor():
+    if request.method == "GET":
+        mensagem = request.args.get("mensagem")
+        return render_template("cadastro_servidor.html")
+
+    if request.method == "POST":
+        nome = request.form["inputName"]
+        cpf = request.form["inputCPF"]
+        email = request.form["inputEmail"]
+        if request.form["inputPassword"] == request.form["inputPasswordConfirm"]:
+            senha = request.form["inputPassword"]
+        else:
+            mensagem = "As senhas não correspondem"
+            return render_template("cadastro_servidor.html", mensagem=mensagem)
+        senhaEcriptada = bcrypt.hashpw(senha.encode("UTF-8"), bcrypt.gensalt())
+        contato = request.form["inputPhone"]
+        matricula = request.form["inputMatricula"]
+        data_cadastro = datetime.now()
+
+        servidor_id = request.form["getUserID"]
+        servidor_admin = Servidor.query.filter(Servidor.pessoa_id.like(servidor_id)).first()
+
+        if servidor_admin.admin == True:
+            pessoa = Pessoa(
+                nome=nome,
+                cpf=cpf,
+                email=email,
+                senha=senhaEcriptada,
+                contato=contato,
+                data_cadastro=data_cadastro,
+            )
+            db.session.add(pessoa)
+            db.session.commit()
+
+            servidor = Servidor(
+                matricula=matricula,
+                pessoa_id=pessoa.id,
+                admin=False,
+            )
+            db.session.add(servidor)
+            db.session.commit()
+        
+        if servidor_admin.admin == False:
+            mensagem = "Usuário não autorizado para cadastrar um Servidor"
+            return render_template("cadastro_servidor.html", mensagem=mensagem)
+
+
+    return redirect("/home")
 
 @app.route("/logout")
 def logout():
