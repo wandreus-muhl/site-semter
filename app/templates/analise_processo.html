@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block conteudo %}
+<div class="row justify-content-center mt-3">
+    <div class="col-lg-6 col-md-8 col-sm-8">
+        <h3>Análise do processo </h3>
+        <form class="row">
+            <input formmethod="GET" id="getUserID" name="getUserID" value="{{ current_user.id }}">
+        </form>
+        <div class="row g-2 mb-2">
+            {% for p in processos %}
+            <a href="/processo/{{ p.id }}" class="none">
+            <div class="col-6">
+                <div class="px-2 shadow border-start border-30 border-warning">
+                    <div class="border-bottom">
+                        <h3>{{ p.nome }}</h3>
+                        <p>{{ p.data_inicio }}</p>
+                    </div>
+                    <p>{{ p.tipo_processo }}</p>
+                </div>
+            </div>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

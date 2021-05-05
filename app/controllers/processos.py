@@ -2,7 +2,7 @@ from app import app, db, login_manager
 from flask import render_template, redirect, url_for, request, session
 from flask_login import login_required
 from flask_login import login_user, logout_user
-from app.models.tables import Pessoa, Processo, Contribuinte
+from app.models.tables import Pessoa, Processo, Contribuinte, Status, Servidor
 from datetime import datetime
 import bcrypt
 
@@ -33,9 +33,32 @@ def cadastrar_processos():
             tipo_processo=tipo_processo,
             tipo_lote=tipo_lote,
             data_inicio=data_inicio,
-            contribuinte_id=contribuinte.id
+            contribuinte_id=contribuinte.id,
+            servidor_id=1
         )
         db.session.add(processo)
         db.session.commit()
 
     return redirect("/home")
+
+@app.route("/processo/<id_processo>")
+def visualizar_processo(id_processo):
+    processo = Processo.query.filter_by(id=id_processo).first()
+
+    return render_template("processo.html", processo=processo)
+
+@app.route("/analise_processo", methods=["GET", "POST"])
+@login_required
+def analisar_processo():
+    usuario = request.args.get("getUserID")
+
+    if usuario:
+        servidor = Servidor.query.filter(Servidor.pessoa_id.like(usuario)).first()
+        id_servidor = servidor.id
+        app.logger.info('O seguinte usuário tentou mostrar seus processos: '+ str(id_servidor))
+
+        processos = Processo.query.filter(Processo.servidor_id.like(id_servidor)).all()
+    else: 
+        processos = Processo.query.all()
+
+    return render_template("analise_processo.html", processos=processos)

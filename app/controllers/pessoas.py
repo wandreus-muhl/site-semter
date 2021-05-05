@@ -73,7 +73,7 @@ def cadastro():
         db.session.add(contribuinte)
         db.session.commit()
 
-    return redirect("/login")
+    return redirect("/home")
 
 
 @app.route("/logout")

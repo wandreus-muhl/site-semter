@@ -1,6 +1,6 @@
 from app import db
-from app.models.tables import Pessoa, Contribuinte, Processo, Status
-from datetime import date
+from app.models.tables import Pessoa, Contribuinte, Processo, Status, Servidor
+from datetime import datetime
 import bcrypt
 
 # #Criando pessoas
@@ -10,7 +10,7 @@ import bcrypt
 # db.session.add(p1)
 # db.session.commit()
 
-# #Criando servidor
+# #Criando contribuinte
 # c1 = Contribuinte(cpf=p1.cpf, pessoa_id=4)
 # db.session.add(c1)
 # db.session.commit()
@@ -26,4 +26,13 @@ import bcrypt
 
 # c1 = Contribuinte(cpf=12345656710, pessoa_id=5)
 # db.session.add(c1)
+# db.session.commit()
+
+# # Criando status
+# s1 = Status(nome="Em análise", descricao="O seu processo foi encaminhado para análise", data_atualizacao=datetime.now())
+# db.session.add(s1)
+# db.session.commit()
+
+# s1 = Servidor(matricula="12345", admin=True, pessoa_id=4)
+# db.session.add(s1)
 # db.session.commit()

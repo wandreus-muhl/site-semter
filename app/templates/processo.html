@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block conteudo %}
+<div class="row justify-content-center mt-3">
+    <div class="col-lg-6 col-md-8 col-sm-8">
+        <div class="card shadow">
+            <div class="card-title text-center">
+                <h1 class="h1 mt-4">Processo {{ processo.nome }}</h1>
+            </div>
+            <div class="card-body mt-lg-2">
+                <p>{{ processo.id }}</p>
+                <p>{{ processo.tipo_processo }}</p>
+                <p>{{ processo.data_inicio }}</p>
+                <p>{{ processo.parecer }}</p>
+                <p>{{ processo.servidor_id }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
