@@ -62,11 +62,18 @@ class Status(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(250), nullable=False)
-    descricao = db.Column(db.String(250), nullable=False)
-    data_atualizacao = db.Column(db.DateTime, nullable=False)
 
     def _repr_(self):
         return "<Status tipo %s>" % self.nome
+
+
+class Atualizacao(db.Model):
+    __tablename__ = "atualizacoes"
+
+    id = db.Column(db.Integer, primary_key=True)
+    data_atualizacao = db.Column(db.DateTime, nullable=False)
+    status_id = db.Column(db.Integer, db.ForeignKey("status.id"))
+
 
 
 class Processo(db.Model):
@@ -84,8 +91,8 @@ class Processo(db.Model):
     contribuinte_id = db.Column(
         db.Integer, db.ForeignKey("contribuintes.id"), nullable=False
     )
-    status_id = db.Column(
-        db.Integer, db.ForeignKey("status.id"), default="1"
+    atualizacao_id = db.Column(
+        db.Integer, db.ForeignKey("atualizacoes.id")
     )  # Quando tiver o status certo de encaminhado, colocar aqui!
 
     def _repr_(self):

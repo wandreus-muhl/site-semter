@@ -73,7 +73,7 @@ def cadastro():
         db.session.add(contribuinte)
         db.session.commit()
 
-    return redirect("/home")
+    return redirect("/login")
 
 @app.route("/cadastro_servidor", methods=["GET", "POST"])
 def cadastro_servidor():
@@ -143,9 +143,10 @@ def nao_autorizado():
 def listarProcessos():
     
     usuario = current_user.get_id()
+    contribuinte = Contribuinte.query.filter(Contribuinte.pessoa_id.like(usuario)).first()
 
-    if usuario:
-        contribuinte = Contribuinte.query.filter(Contribuinte.pessoa_id.like(usuario)).first()
+    if contribuinte:
+        
         id_contribuinte = contribuinte.id
         app.logger.info('O seguinte usuário tentou mostrar seus processos: '+ str(id_contribuinte))
 
