@@ -1,7 +1,10 @@
 {% extends "base.html" %}
 {% block conteudo %}
-    <h3>Análise do processo</h3>
+    <h3>Análises pendentes</h3>
     <div class="row g-2 mb-2 mt-3">
+        {% if mensagem %}
+        <p>{{ mensagem }}</p>
+        {% endif %}
         {% for p in processos %}
         <div class="col-6">
             <a href="/processo/{{ p.id }}" class="text-decoration-none text-dark">
@@ -11,6 +14,8 @@
                     <p>{{ p.data_inicio }}</p>
                 </div>
                 <p>{{ p.tipo_processo }}</p>
+            
+                <a class="btn btn-primary" href="/analise_processo/{{ p.id }}" role="button">Analisar</a>
             </div>
             </a>
         </div>

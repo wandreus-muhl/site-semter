@@ -76,6 +76,7 @@ def cadastro():
     return redirect("/login")
 
 @app.route("/cadastro_servidor", methods=["GET", "POST"])
+@login_required
 def cadastro_servidor():
     if request.method == "GET":
         mensagem = request.args.get("mensagem")
@@ -151,6 +152,12 @@ def listarProcessos():
         app.logger.info('O seguinte usuário tentou mostrar seus processos: '+ str(id_contribuinte))
 
         processos = Processo.query.filter(Processo.contribuinte_id.like(id_contribuinte)).all()
+
+        if processos:
+            return render_template("home.html", processos=processos)
+        else:
+            mensagem = "Não há processos criados por este usuário"
+            return render_template("home.html", mensagem=mensagem)
     else: 
         processos = Processo.query.all()
 
