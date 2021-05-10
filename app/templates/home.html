@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 {% block conteudo %}
 <div class="row g-2 mb-2 mt-3">
+    {% if mensagem %}
+    <p>{{ mensagem }}</p>
+    {% endif %}
     {% for p in processos %}
     <div class="col-xs-6 col-md-6">
         <a href="/processo/{{ p.id }}" class="text-decoration-none text-dark">

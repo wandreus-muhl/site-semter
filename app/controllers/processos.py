@@ -49,17 +49,24 @@ def visualizar_processo(id_processo):
 
 @app.route("/analise_processo", methods=["GET", "POST"])
 @login_required
-def analisar_processo():
+def analisar_processos():
 
     usuario = current_user.get_id()
+    servidor = Servidor.query.filter(Servidor.pessoa_id.like(usuario)).first()
 
-    if usuario:
-        servidor = Servidor.query.filter(Servidor.pessoa_id.like(usuario)).first()
+    if servidor:
         id_servidor = servidor.id
         app.logger.info('O seguinte usuário tentou mostrar seus processos: '+ str(id_servidor))
 
         processos = Processo.query.filter(Processo.servidor_id.like(id_servidor)).all()
+        return render_template("lista_processo.html", processos=processos)
     else: 
-        processos = Processo.query.all()
+        mensagem = "Você não está autorizado a ver esta página"
 
-    return render_template("analise_processo.html", processos=processos)
+    return render_template("lista_processo.html", mensagem=mensagem)
+
+@app.route("/analise_processo/<id_processo>", methods=["GET", "POST"])
+@login_required
+def analise_de_processo(id_processo):
+    processo = Processo.query.filter_by(id=id_processo).first()
+    return render_template("processo.html", processo=processo)
