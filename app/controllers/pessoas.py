@@ -66,14 +66,12 @@ def cadastro():
         db.session.add(pessoa)
         db.session.commit()
 
-        contribuinte = Contribuinte(
-            cpf=pessoa.cpf,
-            pessoa_id=pessoa.id
-        )
+        contribuinte = Contribuinte(cpf=pessoa.cpf, pessoa_id=pessoa.id)
         db.session.add(contribuinte)
         db.session.commit()
 
     return redirect("/home")
+
 
 @app.route("/cadastro_servidor", methods=["GET", "POST"])
 def cadastro_servidor():
@@ -96,7 +94,9 @@ def cadastro_servidor():
         data_cadastro = datetime.now()
 
         servidor_id = request.form["getUserID"]
-        servidor_admin = Servidor.query.filter(Servidor.pessoa_id.like(servidor_id)).first()
+        servidor_admin = Servidor.query.filter(
+            Servidor.pessoa_id.like(servidor_id)
+        ).first()
 
         if servidor_admin.admin == True:
             pessoa = Pessoa(
@@ -117,13 +117,13 @@ def cadastro_servidor():
             )
             db.session.add(servidor)
             db.session.commit()
-        
+
         if servidor_admin.admin == False:
             mensagem = "Usuário não autorizado para cadastrar um Servidor"
             return render_template("cadastro_servidor.html", mensagem=mensagem)
 
-
     return redirect("/home")
+
 
 @app.route("/logout")
 def logout():
@@ -141,22 +141,28 @@ def nao_autorizado():
 @app.route("/home")
 @login_required
 def listarProcessos():
-    
+
     usuario = current_user.get_id()
 
     if usuario:
-        contribuinte = Contribuinte.query.filter(Contribuinte.pessoa_id.like(usuario)).first()
+        contribuinte = Contribuinte.query.filter(
+            Contribuinte.pessoa_id.like(usuario)
+        ).first()
         id_contribuinte = contribuinte.id
-        app.logger.info('O seguinte usuário tentou mostrar seus processos: '+ str(id_contribuinte))
+        app.logger.info(
+            "O seguinte usuário tentou mostrar seus processos: " + str(id_contribuinte)
+        )
 
-        processos = Processo.query.filter(Processo.contribuinte_id.like(id_contribuinte)).all()
-    else: 
+        processos = Processo.query.filter(
+            Processo.contribuinte_id.like(id_contribuinte)
+        ).all()
+    else:
         processos = Processo.query.all()
 
     return render_template("home.html", processos=processos)
 
 
-@app.route("/pesquisa")
+@app.route("/")
 def pesquisa():
     # nome = request.args.get("getUserID")
 
@@ -166,6 +172,6 @@ def pesquisa():
     #     app.logger.info('O seguinte usuário tentou mostrar seus processos: '+ str(id_contribuinte))
 
     #     processos = Processo.query.filter(Processo.contribuinte_id.like(id_contribuinte)).all()
-    # else: 
+    # else:
     #     processos = Processo.query.all()
     return render_template("pesquisa.html")

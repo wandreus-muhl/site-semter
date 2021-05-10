@@ -1,11 +1,9 @@
 .capitalized {
 	text-transform: capitalize;
 }
+
 .cursor-pointer {
 	cursor: pointer;
-}
-.invisible {
-	display: none;
 }
 .border-30 {
 	border-width: 30px !important;
