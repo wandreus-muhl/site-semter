@@ -24,6 +24,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = (
 )
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SECRET_KEY"] = os.getenv("SECRET")
+app.config['UPLOAD_FOLDER'] = "./app/uploads"
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db, compare_type=True)

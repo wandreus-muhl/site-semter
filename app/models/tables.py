@@ -74,7 +74,11 @@ class Atualizacao(db.Model):
     data_atualizacao = db.Column(db.DateTime, nullable=False)
     status_id = db.Column(db.Integer, db.ForeignKey("status.id"))
 
+class ArquivosProcesso(db.Model):
+    __tablename__ = "arquivos"
 
+    id = db.Column(db.Integer, primary_key=True)
+    
 
 class Processo(db.Model):
     __tablename__ = "processos"

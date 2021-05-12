@@ -4,7 +4,8 @@ from flask_login import login_required, current_user
 from flask_login import login_user, logout_user
 from app.models.tables import Pessoa, Processo, Contribuinte, Status, Servidor
 from datetime import datetime
-import bcrypt
+from werkzeug.utils import secure_filename
+import bcrypt, os, random, string
 
 
 @app.route("/novo_processo", methods=["GET", "POST"])
@@ -20,6 +21,10 @@ def cadastrar_processos():
         tipo_processo = request.form["inputKind"]
         tipo_lote = request.form["inputType"]
         data_inicio = datetime.now()
+        copiaRG = request.files["inputCopiaRG"]
+        filename = secure_filename(copiaRG.filename)
+
+        copiaRG.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
        
         contribuinte_id = current_user.get_id()
         # Contribuinte.query.filter_by(pessoa_id=contribuinte_id).first()
