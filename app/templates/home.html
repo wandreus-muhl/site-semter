@@ -7,16 +7,18 @@
     {% for p in processos %}
     <div class="col-xs-6 col-md-6">
         <a href="/processo/{{ p.id }}" class="text-decoration-none text-dark">
-        <div class="px-2 shadow border-start border-30 border-warning">
+        <div class="shadow px-2 pt-2 border-orange border-start border-30">
             <div class="border-bottom">
-                <h3>{{ p.nome }}</h3>
+                <h3 class="title">{{ p.nome }}</h3>
                 <p>{{ p.data_inicio }}</p>
             </div>
-            <p>{{ p.tipo_processo }}</p>
+            <p class="py-2">{{ p.tipo_processo }}</p>
         </div>
         </a>
     </div>
     {% endfor %}
 </div>
-<a class="btn btn-info" href="/novo_processo">+</a>
+
+<a class="btn btn-info text-light rounded-circle" href="/novo_processo"><i class="bi bi-plus h3"></i></a>
+
 {% endblock %}

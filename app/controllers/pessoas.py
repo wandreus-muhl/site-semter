@@ -144,23 +144,29 @@ def nao_autorizado():
 def listarProcessos():
 
     usuario = current_user.get_id()
-    contribuinte = Contribuinte.query.filter(Contribuinte.pessoa_id.like(usuario)).first()
+    contribuinte = Contribuinte.query.filter(
+        Contribuinte.pessoa_id.like(usuario)
+    ).first()
 
     if contribuinte:
-        
+
         id_contribuinte = contribuinte.id
         app.logger.info(
             "O seguinte usuário tentou mostrar seus processos: " + str(id_contribuinte)
         )
 
-        processos = Processo.query.filter(Processo.contribuinte_id.like(id_contribuinte)).all()
+        processos = Processo.query.filter(
+            Processo.contribuinte_id.like(id_contribuinte)
+        ).all()
 
         if processos:
             return render_template("home.html", processos=processos)
         else:
-            mensagem = "Não há processos criados por este usuário"
+            mensagem = (
+                "Você ainda não abriu nenhum processo. Clique no botão para começar."
+            )
             return render_template("home.html", mensagem=mensagem)
-    else: 
+    else:
         processos = Processo.query.all()
 
     return render_template("home.html", processos=processos)

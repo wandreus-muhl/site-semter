@@ -1,3 +1,17 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat');
+@import url('https://fonts.googleapis.com/css?family=Poppins');
+@import url('https://fonts.googleapis.com/css?family=Rubik');
+@import url('https://fonts.googleapis.com/css?family=Oxygen');
+
+* {
+	margin: 0;
+	padding: 0;
+	font-family: 'Montserrat';
+}
+.title {
+	font-family: 'Rubik' !important;
+	font-weight: semibold;
+}
 .capitalized {
 	text-transform: capitalize;
 }
@@ -7,4 +21,10 @@
 }
 .border-30 {
 	border-width: 30px !important;
+}
+.border-yale{
+	border-color: #044B7F !important;
+}
+.border-orange {
+	border-color:#FFA500 !important;
 }
