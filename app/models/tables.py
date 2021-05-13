@@ -74,11 +74,6 @@ class Atualizacao(db.Model):
     data_atualizacao = db.Column(db.DateTime, nullable=False)
     status_id = db.Column(db.Integer, db.ForeignKey("status.id"))
 
-class ArquivosProcesso(db.Model):
-    __tablename__ = "arquivos"
-
-    id = db.Column(db.Integer, primary_key=True)
-    
 
 class Processo(db.Model):
     __tablename__ = "processos"
@@ -101,3 +96,22 @@ class Processo(db.Model):
 
     def _repr_(self):
         return "<Processo %d>" % self.cod_processo
+
+
+class ArquivosProcesso(db.Model):
+    __tablename__ = "arquivos"
+
+    id = db.Column(db.Integer, primary_key=True)
+    requerimento = db.Column(db.String(45))
+    copiaRG = db.Column(db.String(45), nullable=False)
+    copiaCPF = db.Column(db.String(45))
+    certidaoNegativaPrefeitura = db.Column(db.String(45))
+    certidaoNegativaSAAE = db.Column(db.String(45))
+    tituloImovel = db.Column(db.String(45))
+    copiaComprovanteResidencia = db.Column(db.String(45))
+    projetoArt = db.Column(db.String(45))
+    documentacaoEmpresa = db.Column(db.String(45))
+    procuracao = db.Column(db.String(45))
+    processo_id = db.Column(
+        db.Integer, db.ForeignKey("processos.id")
+    )
