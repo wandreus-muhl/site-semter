@@ -9,9 +9,10 @@
 </head>
 
 <body>
-    <header class="text-light bg-info p-2">
+    <header class="text-light p-2 bg-info">
         <div class="container">
-            <div class="d-flex flex-row-reverse justify-content-between">
+            <div class="d-flex flex-row justify-content-between">
+                <img src="{{url_for('static', filename='imgs/brasao-vilhena.png')}}" alt="Brasão de Vilhena" width="60px">
                 {% if current_user.is_authenticated %}
                 <div class="d-flex flex-nowrap align-self-center border-start border-light ps-2 btn-group">
                     <button type="button" class="btn text-light dropdown-toggle p-0" id="dropdownUserMenu"
