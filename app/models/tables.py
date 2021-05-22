@@ -102,5 +102,42 @@ class Processo(db.Model):
 class ArquivoProcesso(db.Model):
     __tablename__ = "arquivos"
 
-    id = db.Column(db.String(64), primary_key=True)
-    processo_id = db.Column(db.Integer, db.ForeignKey("processos.id"))
+    id = db.Column(db.Integer, primary_key=True)
+    requerimento = db.Column(db.String(45))
+    copiaRG = db.Column(db.String(45), nullable=False)
+    copiaCPF = db.Column(db.String(45))
+    certidaoNegativaPrefeitura = db.Column(db.String(45))
+    certidaoNegativaSAAE = db.Column(db.String(45))
+    tituloImovel = db.Column(db.String(45))
+    copiaComprovanteResidencia = db.Column(db.String(45))
+    projetoArt = db.Column(db.String(45))
+    documentacaoEmpresa = db.Column(db.String(45))
+    procuracao = db.Column(db.String(45))
+    processo_id = db.Column(
+        db.Integer, db.ForeignKey("processos.id")
+    )
+
+class CheckList(db.Model):
+    __tablename__ = "checklist"
+
+    id = db.Column(db.Integer, primary_key=True)
+    requerimento = db.Column(db.Boolean)
+    CNDPrefeitura = db.Column(db.Boolean)
+    CNDSAAE = db.Column(db.Boolean)
+    tituloImovel = db.Column(db.Boolean)
+    documentacaoEmpresa = db.Column(db.Boolean)
+    copiaRG = db.Column(db.Boolean)
+    copiaCPF = db.Column(db.Boolean)
+    copiaComprovanteResidencia = db.Column(db.Boolean)
+    procuracao = db.Column(db.Boolean)
+    plantaAssinada = db.Column(db.Boolean)
+    elementosCorretos = db.Column(db.Boolean)
+    dadosDimensoes = db.Column(db.Boolean)
+    proposta = db.Column(db.Boolean)
+    locacaoExistentes = db.Column(db.Boolean)
+    edificacaoAverbada = db.Column(db.Boolean)
+    ARTApresentado = db.Column(db.Boolean)
+    memorialDescritivo = db.Column(db.Boolean)
+    processo_id = db.Column(
+        db.Integer, db.ForeignKey("processos.id")
+    )

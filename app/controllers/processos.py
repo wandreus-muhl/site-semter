@@ -8,6 +8,7 @@ from app.models.tables import (
     Status,
     Servidor,
     ArquivoProcesso,
+    CheckList,
 )
 from datetime import datetime
 import os, uuid
@@ -55,10 +56,16 @@ def cadastrar_processos():
         db.session.commit()
 
         arquivo = ArquivoProcesso(
-            id=fileName,
+            copiaRG=fileName,
             processo_id=processo.id,
         )
         db.session.add(arquivo)
+        db.session.commit()
+
+        checklist = CheckList(
+            processo_id=processo.id,
+        )
+        db.session.add(checklist)
         db.session.commit()
 
         pastaNova = "./app/uploads/" + str(processo.id)
@@ -114,4 +121,18 @@ def analisar_processos():
 @login_required
 def analise_de_processo(id_processo):
     processo = Processo.query.filter_by(id=id_processo).first()
-    return render_template("processo.html", processo=processo)
+    arquivo = ArquivoProcesso.query.filter_by(processo_id=id_processo).first()
+    analise = 1
+    return render_template("processo.html", processo=processo, arquivo=arquivo, analise=analise)
+
+@app.route("/processo_analisado/<id_processo>", methods=["POST"])
+@login_required
+def processo_analisado(id_processo):
+    tipo_lote = request.form["checkBoxRequerimento"]
+    if tipo_lote == "1":
+        tipo_lote = True
+        checklist = CheckList.query.filter_by(processo_id=id_processo).first()
+        checklist.requerimento = tipo_lote
+        db.session.commit()
+
+    return redirect("/home")
