@@ -73,7 +73,7 @@ class Atualizacao(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     data_atualizacao = db.Column(db.DateTime, nullable=False)
-    status_id = db.Column(db.Integer, db.ForeignKey("status.id"))
+    status_id = db.Column(db.Integer, db.ForeignKey("status.id"), nullable=False)
 
 
 class Processo(db.Model):

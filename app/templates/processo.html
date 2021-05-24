@@ -77,12 +77,28 @@
                     <label for="checkboxDocumentacaoEmpresa" class="form-label">Documentação da Empresa</label>
                     <input type="checkbox" name="checkboxDocumentacaoEmpresa">
                 </div>
-                {% endif %}
                 <div class="d-grid gap-2 col-8 mx-auto mt-4">
-                    <input type="submit" value="CONCLUÍDO" class="btn btn-info text-light text-uppercase fs-5"></input>
+                    <input type="button" id="aprovar" onclick="status_processo(3)" value="Aprovar" class="btn btn-success text-light text-uppercase fs-5"></input>
+                    <input type="button" id="devolver" onclick="status_processo(5)" value="Devolver" class="btn btn-danger text-light text-uppercase fs-5"></input>
                 </div>
+                {% else %}
+                <div class="d-grid gap-2 col-8 mx-auto mt-4">
+                    <input type="submit" value="CONCLUÍDO" class="btn btn-info bg-yale text-uppercase fs-5 text-light"></input>
+                </div>
+                {% endif %}
             </form>
         </div>
     </div>
 </div>
+
+<script>
+    let status = 0;
+
+    function status_processo(id){
+        status = id
+        let url = "/processo_analisado/{{processo.id}}/" + status
+        window.location.href = url
+    }
+    
+</script>
 {% endblock %}

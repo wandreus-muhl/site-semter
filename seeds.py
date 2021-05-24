@@ -51,11 +51,4 @@ p1 = Processo(
 db.session.add(p1)
 db.session.commit()
 
-# Criando Status
-s1 = Status(nome="Encaminhado", descricao="Encaminhado ao setor da SEMAD")
-db.session.add(s1)
-db.session.commit()
 
-s2 = Status(nome="Em análise", descricao="O seu processo foi encaminhado para análise")
-db.session.add(s2)
-db.session.commit()

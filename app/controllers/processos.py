@@ -9,6 +9,7 @@ from app.models.tables import (
     Servidor,
     ArquivoProcesso,
     CheckList,
+    Atualizacao,
 )
 from datetime import datetime
 import os, uuid
@@ -43,6 +44,13 @@ def cadastrar_processos():
         # filename = str(uuid.uuid4())
         # filename = filename+".pdf"
 
+        status = Status.query.filter_by(id=1)
+
+        atualizacao = Atualizacao(
+            data_atualizacao=data_inicio,
+            status_id=status.id
+        )
+
         processo = Processo(
             nome=nome,
             numero=numero,
@@ -51,6 +59,7 @@ def cadastrar_processos():
             data_inicio=data_inicio,
             contribuinte_id=contribuinte.id,
             servidor_id=1,
+            atualizacao_id=atualizacao.id
         )
         db.session.add(processo)
         db.session.commit()
@@ -125,14 +134,24 @@ def analise_de_processo(id_processo):
     analise = 1
     return render_template("processo.html", processo=processo, arquivo=arquivo, analise=analise)
 
-@app.route("/processo_analisado/<id_processo>", methods=["POST"])
+@app.route("/processo_analisado/<id_processo>/<status>", methods=["GET", "POST"])
 @login_required
-def processo_analisado(id_processo):
-    tipo_lote = request.form["checkBoxRequerimento"]
-    if tipo_lote == "1":
-        tipo_lote = True
-        checklist = CheckList.query.filter_by(processo_id=id_processo).first()
-        checklist.requerimento = tipo_lote
-        db.session.commit()
+def processo_analisado(id_processo, status):
+    # checkBoxRequerimento = request.form["checkBoxRequerimento"]
+    checkBoxRequerimento = True
+    checklist = CheckList.query.filter_by(processo_id=id_processo).first()
 
-    return redirect("/home")
+    data_inicio = datetime.now()
+    atualizacao = Atualizacao(
+        data_atualizacao=data_inicio,
+        status_id=status,
+    )
+    db.session.add(atualizacao)
+
+    processo = Processo.query.filter_by(id=id_processo).first()
+    processo.atualizacao_id = atualizacao.id
+    checklist.requerimento = checkBoxRequerimento
+
+    db.session.commit()
+
+    return redirect("/analise_processo")
