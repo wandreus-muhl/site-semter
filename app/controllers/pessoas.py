@@ -184,4 +184,4 @@ def pesquisa():
     #     processos = Processo.query.filter(Processo.contribuinte_id.like(id_contribuinte)).all()
     # else:
     #     processos = Processo.query.all()
-    return render_template("pesquisa.html")
+    return render_template("index.html")

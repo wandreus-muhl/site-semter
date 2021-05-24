@@ -1,7 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat');
-@import url('https://fonts.googleapis.com/css?family=Poppins');
 @import url('https://fonts.googleapis.com/css?family=Rubik');
-@import url('https://fonts.googleapis.com/css?family=Oxygen');
 
 * {
 	margin: 0;
@@ -31,4 +29,12 @@
 
 .bg-yale {
 	background: #044B7F !important;
+}
+
+.btn-yale{
+	background: #044B7F !important;
+}
+
+.text-yale {
+	color: #044B7F !important;
 }
