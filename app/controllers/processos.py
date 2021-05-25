@@ -87,7 +87,8 @@ def cadastrar_processos():
 
 @app.route("/processo/<id_processo>/arquivos/<arquivo>")
 def enviaArquivos(id_processo, arquivo):
-    pasta = "./\\uploads\\" + id_processo + "\\" + arquivo
+    #pasta = "./\\uploads\\" + id_processo + "\\" + arquivo
+    pasta = "./uploads/" + id_processo + "/" + arquivo
     return send_file(pasta, as_attachment=False)
 
 
@@ -154,6 +155,7 @@ def processo_analisado(id_processo, status):
     atualizacao = Atualizacao(
         data_atualizacao=data_inicio,
         status_id=status,
+        processo_id=id_processo,
     )
     db.session.add(atualizacao)
 

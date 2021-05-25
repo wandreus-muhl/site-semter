@@ -46,11 +46,8 @@
                         <i class="bi bi-file-earmark-arrow-up-fill"></i>
                         <label for="inputCopiaRG" class="form-label">Documentação</label>
                         <br>
-                        {% for a in arquivos%}
-                        <div class="ratio ratio-4x3 mb-2">
-                            <iframe src="/processo/{{id_processo}}/arquivos/{{a}}"></iframe>
-                        </div>
-                        {% endfor %}
+                        <a class="text-info cursor-pointer text-decoration-none"
+                    data-bs-toggle="modal" data-bs-target="#modalPDF">Clique aqui!</a>
 
                     </div>
                     <div class="text-secondary mt-4">
@@ -102,6 +99,20 @@
                 </form>
         </div>
     </div>
+</div>
+
+
+
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" id="modalPDF" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        {% for a in arquivos%}
+        <div class="ratio ratio-4x3 mb-2">
+            <iframe src="/processo/{{id_processo}}/arquivos/{{a}}"></iframe>
+        </div>
+        {% endfor %}
+    </div>
+  </div>
 </div>
 
 <script>
