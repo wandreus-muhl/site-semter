@@ -6,10 +6,12 @@
 	padding: 0;
 	font-family: 'Montserrat';
 }
+
 .title {
 	font-family: 'Rubik' !important;
 	font-weight: semibold;
 }
+
 .capitalized {
 	text-transform: capitalize;
 }
@@ -17,21 +19,36 @@
 .cursor-pointer {
 	cursor: pointer;
 }
+
 .border-30 {
 	border-width: 30px !important;
 }
-.border-yale{
+
+.border-yale {
 	border-color: #044B7F !important;
 }
+
 .border-orange {
-	border-color:#FFA500 !important;
+	border-color: #FFA500 !important;
+}
+
+.border-green {
+	border-color: #00FF6B !important;
+}
+
+.border-red {
+	border-color: #ED2939 !important;
+}
+
+.border-yellow {
+	border-color: #FFFF00 !important;
 }
 
 .bg-yale {
 	background: #044B7F !important;
 }
 
-.btn-yale{
+.btn-yale {
 	background: #044B7F !important;
 }
 

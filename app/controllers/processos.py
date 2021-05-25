@@ -43,14 +43,6 @@ def cadastrar_processos():
 
         # filename = str(uuid.uuid4())
         # filename = filename+".pdf"
-
-        status = Status.query.filter_by(id=1)
-
-        atualizacao = Atualizacao(
-            data_atualizacao=data_inicio,
-            status_id=status.id
-        )
-
         processo = Processo(
             nome=nome,
             numero=numero,
@@ -59,30 +51,34 @@ def cadastrar_processos():
             data_inicio=data_inicio,
             contribuinte_id=contribuinte.id,
             servidor_id=1,
-            atualizacao_id=atualizacao.id
         )
         db.session.add(processo)
         db.session.commit()
+
+        atualizacao = Atualizacao(
+            data_atualizacao=datetime.now(), status_id=1, processo_id=processo.id
+        )
 
         arquivo = ArquivoProcesso(
             copiaRG=fileName,
             processo_id=processo.id,
         )
-        db.session.add(arquivo)
-        db.session.commit()
 
         checklist = CheckList(
             processo_id=processo.id,
         )
-        db.session.add(checklist)
-        db.session.commit()
 
         pastaNova = "./app/uploads/" + str(processo.id)
-        os.mkdir(pastaNova)
+        os.makedirs(pastaNova)
 
         copiaRG.save(
             os.path.join(app.config["UPLOAD_FOLDER"] + "/" + str(processo.id), fileName)
         )
+
+        db.session.add(arquivo)
+        db.session.add(checklist)
+        db.session.add(atualizacao)
+        db.session.commit()
 
     return redirect("/home")
 
@@ -132,7 +128,10 @@ def analise_de_processo(id_processo):
     processo = Processo.query.filter_by(id=id_processo).first()
     arquivo = ArquivoProcesso.query.filter_by(processo_id=id_processo).first()
     analise = 1
-    return render_template("processo.html", processo=processo, arquivo=arquivo, analise=analise)
+    return render_template(
+        "processo.html", processo=processo, arquivo=arquivo, analise=analise
+    )
+
 
 @app.route("/processo_analisado/<id_processo>/<status>", methods=["GET", "POST"])
 @login_required

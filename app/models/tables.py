@@ -74,6 +74,7 @@ class Atualizacao(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     data_atualizacao = db.Column(db.DateTime, nullable=False)
     status_id = db.Column(db.Integer, db.ForeignKey("status.id"), nullable=False)
+    processo_id = db.Column(db.Integer, db.ForeignKey("processos.id"), nullable=False)
 
 
 class Processo(db.Model):
@@ -90,9 +91,6 @@ class Processo(db.Model):
     servidor_id = db.Column(db.Integer, db.ForeignKey("servidores.id"))
     contribuinte_id = db.Column(
         db.Integer, db.ForeignKey("contribuintes.id"), nullable=False
-    )
-    atualizacao_id = db.Column(
-        db.Integer, db.ForeignKey("atualizacoes.id")
     )  # Quando tiver o status certo de encaminhado, colocar aqui!
 
     def _repr_(self):
@@ -113,9 +111,8 @@ class ArquivoProcesso(db.Model):
     projetoArt = db.Column(db.String(45))
     documentacaoEmpresa = db.Column(db.String(45))
     procuracao = db.Column(db.String(45))
-    processo_id = db.Column(
-        db.Integer, db.ForeignKey("processos.id")
-    )
+    processo_id = db.Column(db.Integer, db.ForeignKey("processos.id"))
+
 
 class CheckList(db.Model):
     __tablename__ = "checklist"
@@ -138,6 +135,4 @@ class CheckList(db.Model):
     edificacaoAverbada = db.Column(db.Boolean)
     ARTApresentado = db.Column(db.Boolean)
     memorialDescritivo = db.Column(db.Boolean)
-    processo_id = db.Column(
-        db.Integer, db.ForeignKey("processos.id")
-    )
+    processo_id = db.Column(db.Integer, db.ForeignKey("processos.id"))

@@ -2,7 +2,15 @@ from app import app, db, login_manager
 from flask import render_template, redirect, url_for, request, session
 from flask_login import login_required, current_user
 from flask_login import login_user, logout_user
-from app.models.tables import Pessoa, Processo, Contribuinte, Servidor
+import sys
+from app.models.tables import (
+    Pessoa,
+    Processo,
+    Contribuinte,
+    Servidor,
+    Atualizacao,
+    Status,
+)
 from datetime import datetime
 import bcrypt
 
@@ -155,9 +163,14 @@ def listarProcessos():
             "O seguinte usuário tentou mostrar seus processos: " + str(id_contribuinte)
         )
 
-        processos = Processo.query.filter(
-            Processo.contribuinte_id.like(id_contribuinte)
-        ).all()
+        processos = (
+            db.session.query(Processo, Atualizacao, Status)
+            .select_from(Atualizacao)
+            .join(Processo)
+            .join(Status)
+            .filter(Processo.contribuinte_id == current_user.id)
+            .all()
+        )
 
         if processos:
             return render_template("home.html", processos=processos)

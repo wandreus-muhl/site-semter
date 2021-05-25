@@ -1,21 +1,64 @@
 {% extends "base.html" %}
 {% block conteudo %}
-<div class="row g-2 mb-2 mt-3">
+<div class="row g-3 mb-2 mt-0">
     {% if mensagem %}
     <p>{{ mensagem }}</p>
     {% endif %}
-    {% for p in processos %}
+
+    {% for processo, atualizacao, status in processos %}
+
+    {% if status.id == 3 %}
     <div class="col-xs-6 col-md-6">
-        <a href="/processo/{{ p.id }}" class="text-decoration-none text-dark">
-        <div class="shadow px-2 pt-2 border-orange border-start border-30">
-            <div class="border-bottom">
-                <h3 class="title">{{ p.nome }}</h3>
-                <p>{{ p.data_inicio }}</p>
+        <a href="/processo/{{ processo.id }}" class="text-decoration-none text-dark">
+            <div class="shadow px-2 pt-2 border-green border-start border-30">
+                <div class="border-bottom">
+                    <h3 class="title">{{ processo.nome }}</h3>
+                    <p>{{ atualizacao.data_atualizacao }}</p>
+                </div>
+                <p class="py-2">{{ processo.tipo_processo }}</p>
             </div>
-            <p class="py-2">{{ p.tipo_processo }}</p>
-        </div>
         </a>
     </div>
+
+    {% elif status.id == 4 %}
+    <div class="col-xs-6 col-md-6">
+        <a href="/processo/{{ processo.id }}" class="text-decoration-none text-dark">
+            <div class="shadow px-2 pt-2 border-red border-start border-30">
+                <div class="border-bottom">
+                    <h3 class="title">{{ processo.nome }}</h3>
+                    <p>{{ atualizacao.data_atualizacao }}</p>
+                </div>
+                <p class="py-2">{{ processo.tipo_processo }}</p>
+            </div>
+        </a>
+    </div>
+
+    {% elif status.id == 5 %}
+    <div class="col-xs-6 col-md-6">
+        <a href="/processo/{{ processo.id }}" class="text-decoration-none text-dark">
+            <div class="shadow px-2 pt-2 border-orange border-start border-30">
+                <div class="border-bottom">
+                    <h3 class="title">{{ processo.nome }}</h3>
+                    <p>{{ atualizacao.data_atualizacao }}</p>
+                </div>
+                <p class="py-2">{{ processo.tipo_processo }}</p>
+            </div>
+        </a>
+    </div>
+
+    {% else %}
+    <div class="col-xs-6 col-md-6">
+        <a href="/processo/{{ processo.id }}" class="text-decoration-none text-dark">
+            <div class="shadow px-2 pt-2 border-yellow border-start border-30">
+                <div class="border-bottom">
+                    <h3 class="title">{{ processo.nome }}</h3>
+                    <p>{{ atualizacao.data_atualizacao }}</p>
+                </div>
+                <p class="py-2">{{ processo.tipo_processo }}</p>
+            </div>
+        </a>
+    </div>
+    {% endif %}
     {% endfor %}
 </div>
 
