@@ -161,13 +161,13 @@ def analisar_processos():
 @login_required
 def analise_de_processo(id_processo):
     processo = Processo.query.filter_by(id=id_processo).first()
-    arquivo = ArquivoProcesso.query.filter_by(processo_id=id_processo).first()
+    arquivos = os.listdir("./app/uploads/" + id_processo + "/")
     analise = 1
     atualizacoes = Atualizacao.query.filter_by(processo_id=id_processo).first()
     status = Status.query.filter_by(id=atualizacoes.id).first()
 
     return render_template(
-        "processo.html", processo=processo, arquivo=arquivo, analise=analise, status=status
+        "processo.html", processo=processo, arquivos=arquivos, analise=analise, id_processo=id_processo, status=status
     )
 
 
