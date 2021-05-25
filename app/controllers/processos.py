@@ -31,77 +31,84 @@ def cadastrar_processos():
         return render_template("cadastro_processo.html")
 
     if request.method == "POST":
-
-        nome = request.form["inputName"]
-        numero = request.form["inputNumber"]
-        tipo_processo = request.form["inputKind"]
-        tipo_lote = request.form["inputType"]
-        data_inicio = datetime.now()
-
+        
         contribuinte = Contribuinte.query.filter(
             Contribuinte.pessoa_id.like(current_user.id)
         ).first()
 
-        app.logger.info(
-            "O seguinte usuário tentou criar um processo " + str(contribuinte.id)
-        )
+        if contribuinte:
 
-        processo = Processo(
-            nome=nome,
-            numero=numero,
-            tipo_processo=tipo_processo,
-            tipo_lote=tipo_lote,
-            data_inicio=data_inicio,
-            contribuinte_id=contribuinte.id,
-            servidor_id=1,
-        )
-        db.session.add(processo)
-        db.session.commit()
+            nome = request.form["inputName"]
+            numero = request.form["inputNumber"]
+            tipo_processo = request.form["inputKind"]
+            tipo_lote = request.form["inputType"]
+            data_inicio = datetime.now()
 
-        pastaNova = "./app/uploads/" + str(processo.id)
-        os.makedirs(pastaNova)
-        arquivo = request.files["inputFile"]
-        arquivoAnalise = request.files["inputFileAnalises"]
+            app.logger.info(
+                "O seguinte usuário tentou criar um processo " + str(contribuinte.id)
+            )
 
-        if arquivo.filename != "":
-            arquivo.save(os.path.join(pastaNova, secure_filename(arquivo.filename)))
-            arquivoAnalise.save(os.path.join(pastaNova, secure_filename(arquivoAnalise.filename)))
+            processo = Processo(
+                nome=nome,
+                numero=numero,
+                tipo_processo=tipo_processo,
+                tipo_lote=tipo_lote,
+                data_inicio=data_inicio,
+                contribuinte_id=contribuinte.id,
+                servidor_id=1,
+            )
+            db.session.add(processo)
+            db.session.commit()
 
-        atualizacao = Atualizacao(
-            data_atualizacao=datetime.now(), status_id=1, processo_id=processo.id
-        )
+            pastaNova = "./app/uploads/" + str(processo.id)
+            os.makedirs(pastaNova)
+            arquivo = request.files["inputFile"]
+            arquivoAnalise = request.files["inputFileAnalises"]
 
-        a1 = ArquivoProcesso(
-            copiaRG=arquivo.filename,
-            projetoArt=arquivoAnalise.filename,
-            processo_id=processo.id,
-        )
+            if arquivo.filename != "":
+                arquivo.save(os.path.join(pastaNova, secure_filename(arquivo.filename)))
+                arquivoAnalise.save(os.path.join(pastaNova, secure_filename(arquivoAnalise.filename)))
 
-        checklist = CheckList(
-            processo_id=processo.id,
-            requerimento=False,
-            CNDPrefeitura=False,
-            CNDSAAE=False,
-            tituloImovel=False,
-            documentacaoEmpresa=False,
-            copiaRG=False,
-            copiaCPF=False,
-            copiaComprovanteResidencia=False,
-            procuracao=False,
-            plantaAssinada=False,
-            elementosCorretos=False,
-            dadosDimensoes=False,
-            proposta=False,
-            locacaoExistentes=False,
-            edificacaoAverbada=False,
-            ARTApresentado=False,
-            memorialDescritivo=False,
-        )
+            atualizacao = Atualizacao(
+                data_atualizacao=datetime.now(), status_id=1, processo_id=processo.id
+            )
 
-        db.session.add(a1)
-        db.session.add(checklist)
-        db.session.add(atualizacao)
-        db.session.commit()
+            a1 = ArquivoProcesso(
+                copiaRG=arquivo.filename,
+                projetoArt=arquivoAnalise.filename,
+                processo_id=processo.id,
+            )
+
+            checklist = CheckList(
+                processo_id=processo.id,
+                requerimento=False,
+                CNDPrefeitura=False,
+                CNDSAAE=False,
+                tituloImovel=False,
+                documentacaoEmpresa=False,
+                copiaRG=False,
+                copiaCPF=False,
+                copiaComprovanteResidencia=False,
+                procuracao=False,
+                plantaAssinada=False,
+                elementosCorretos=False,
+                dadosDimensoes=False,
+                proposta=False,
+                locacaoExistentes=False,
+                edificacaoAverbada=False,
+                ARTApresentado=False,
+                memorialDescritivo=False,
+            )
+
+            db.session.add(a1)
+            db.session.add(checklist)
+            db.session.add(atualizacao)
+            db.session.commit()
+
+        else:
+            mensagem = "Você não está cadastrado como contribuinte para cadastrar processos"
+
+            return render_template("home.html", mensagem=mensagem)
 
     return redirect("/home")
 
