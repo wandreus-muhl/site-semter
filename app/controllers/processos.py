@@ -94,7 +94,7 @@ def cadastrar_processos():
 @app.route("/processo/<id_processo>/arquivos/<arquivo>")
 def enviaArquivos(id_processo, arquivo):
     pasta = "./\\uploads\\" + id_processo + "\\" + arquivo
-    return send_file(pasta, as_attachment=True)
+    return send_file(pasta, as_attachment=False)
 
 
 @app.route("/alterar_processo/<id_processo>", methods=["POST"])
@@ -111,7 +111,6 @@ def alterar_processo(id_processo):
 def visualizar_processo(id_processo):
     processo = Processo.query.filter_by(id=id_processo).first()
     arquivos = os.listdir("./app/uploads/" + id_processo + "/")
-    print(arquivos, file=sys.stderr)
 
     return render_template(
         "processo.html", processo=processo, arquivos=arquivos, id_processo=id_processo

@@ -47,9 +47,7 @@
                         <label for="inputCopiaRG" class="form-label">Documentação</label>
                         <br>
                         {% for a in arquivos%}
-                        <img src="/processo/{{id_processo}}/arquivos/{{a}}">
-                        <a href="/processo/{{id_processo}}/arquivos/{{a}}">{{a}}</a>
-                        <iframe src="/processo/{{id_processo}}/arquivos/{{a}}" width="100%" height="500px"></iframe>
+                        <embed src="/processo/{{id_processo}}/arquivos/{{a}}"></embed>
                         {% endfor %}
                         
                     </div>
