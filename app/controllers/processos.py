@@ -1,5 +1,13 @@
 from app import app, db
-from flask import render_template, redirect, request
+from flask import (
+    render_template,
+    redirect,
+    request,
+    send_file,
+    send_from_directory,
+    safe_join,
+    abort,
+)
 from flask_login import login_required, current_user
 from app.models.tables import (
     Pessoa,
@@ -12,7 +20,7 @@ from app.models.tables import (
     Atualizacao,
 )
 from datetime import datetime
-import os, uuid
+import os, uuid, sys
 
 
 @app.route("/novo_processo", methods=["GET", "POST"])
@@ -29,7 +37,7 @@ def cadastrar_processos():
         tipo_lote = request.form["inputType"]
         data_inicio = datetime.now()
         copiaRG = request.files["inputCopiaRG"]
-        fileName = str(uuid.uuid4())
+        fileName = str(uuid.uuid4()) + ".pdf"
 
         contribuinte_id = current_user.get_id()
         # Contribuinte.query.filter_by(pessoa_id=contribuinte_id).first()
@@ -83,6 +91,12 @@ def cadastrar_processos():
     return redirect("/home")
 
 
+@app.route("/processo/<id_processo>/arquivos/<arquivo>")
+def enviaArquivos(id_processo, arquivo):
+    pasta = "./\\uploads\\" + id_processo + "\\" + arquivo
+    return send_file(pasta, as_attachment=True)
+
+
 @app.route("/alterar_processo/<id_processo>", methods=["POST"])
 @login_required
 def alterar_processo(id_processo):
@@ -96,9 +110,12 @@ def alterar_processo(id_processo):
 @app.route("/processo/<id_processo>")
 def visualizar_processo(id_processo):
     processo = Processo.query.filter_by(id=id_processo).first()
-    arquivo = ArquivoProcesso.query.filter_by(processo_id=id_processo).first()
+    arquivos = os.listdir("./app/uploads/" + id_processo + "/")
+    print(arquivos, file=sys.stderr)
 
-    return render_template("processo.html", processo=processo, arquivo=arquivo)
+    return render_template(
+        "processo.html", processo=processo, arquivos=arquivos, id_processo=id_processo
+    )
 
 
 @app.route("/analise_processo", methods=["GET", "POST"])
