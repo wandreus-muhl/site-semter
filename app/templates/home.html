@@ -7,7 +7,20 @@
 
     {% for processo, atualizacao, status in processos %}
 
-    {% if status.id == 3 %}
+    {% if status.id == 1 %}
+    <div class="col-xl-4 col-lg-6 col-md-6">
+        <a href="/processo/{{ processo.id }}" class="text-decoration-none text-dark">
+            <div class="shadow px-2 pt-2 border-yellow border-start border-30">
+                <div class="border-bottom">
+                    <h3 class="title">{{ processo.nome }}</h3>
+                    <p>{{ atualizacao.data_atualizacao }}</p>
+                </div>
+                <p class="py-2">{{ processo.tipo_processo }}</p>
+            </div>
+        </a>
+    </div>
+
+    {% elif status.id == 3 %}
     <div class="col-xl-4 col-lg-6 col-md-6">
         <a href="/processo/{{ processo.id }}" class="text-decoration-none text-dark">
             <div class="shadow px-2 pt-2 border-green border-start border-30">

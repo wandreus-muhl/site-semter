@@ -52,7 +52,7 @@ def cadastrar_processos():
             tipo_processo=tipo_processo,
             tipo_lote=tipo_lote,
             data_inicio=data_inicio,
-            contribuinte_id=current_user.id,
+            contribuinte_id=contribuinte.id,
             servidor_id=1,
         )
         db.session.add(processo)
@@ -61,8 +61,11 @@ def cadastrar_processos():
         pastaNova = "./app/uploads/" + str(processo.id)
         os.makedirs(pastaNova)
         arquivo = request.files["inputFile"]
+        arquivoAnalise = request.files["inputFileAnalises"]
+
         if arquivo.filename != "":
             arquivo.save(os.path.join(pastaNova, secure_filename(arquivo.filename)))
+            arquivoAnalise.save(os.path.join(pastaNova, secure_filename(arquivoAnalise.filename)))
 
         atualizacao = Atualizacao(
             data_atualizacao=datetime.now(), status_id=1, processo_id=processo.id
@@ -70,11 +73,29 @@ def cadastrar_processos():
 
         a1 = ArquivoProcesso(
             copiaRG=arquivo.filename,
+            projetoArt=arquivoAnalise.filename,
             processo_id=processo.id,
         )
 
         checklist = CheckList(
             processo_id=processo.id,
+            requerimento=False,
+            CNDPrefeitura=False,
+            CNDSAAE=False,
+            tituloImovel=False,
+            documentacaoEmpresa=False,
+            copiaRG=False,
+            copiaCPF=False,
+            copiaComprovanteResidencia=False,
+            procuracao=False,
+            plantaAssinada=False,
+            elementosCorretos=False,
+            dadosDimensoes=False,
+            proposta=False,
+            locacaoExistentes=False,
+            edificacaoAverbada=False,
+            ARTApresentado=False,
+            memorialDescritivo=False,
         )
 
         db.session.add(a1)
@@ -107,8 +128,11 @@ def visualizar_processo(id_processo):
     processo = Processo.query.filter_by(id=id_processo).first()
     arquivos = os.listdir("./app/uploads/" + id_processo + "/")
 
+    atualizacoes = Atualizacao.query.filter_by(processo_id=id_processo).first()
+    status = Status.query.filter_by(id=atualizacoes.id).first()
+
     return render_template(
-        "processo.html", processo=processo, arquivos=arquivos, id_processo=id_processo
+        "processo.html", processo=processo, arquivos=arquivos, id_processo=id_processo, status=status
     )
 
 
@@ -139,8 +163,11 @@ def analise_de_processo(id_processo):
     processo = Processo.query.filter_by(id=id_processo).first()
     arquivo = ArquivoProcesso.query.filter_by(processo_id=id_processo).first()
     analise = 1
+    atualizacoes = Atualizacao.query.filter_by(processo_id=id_processo).first()
+    status = Status.query.filter_by(id=atualizacoes.id).first()
+
     return render_template(
-        "processo.html", processo=processo, arquivo=arquivo, analise=analise
+        "processo.html", processo=processo, arquivo=arquivo, analise=analise, status=status
     )
 
 

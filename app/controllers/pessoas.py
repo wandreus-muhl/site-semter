@@ -169,7 +169,7 @@ def listarProcessos():
             .join(Status)
             .join(Processo)
             .order_by(Atualizacao.id.desc())
-            .filter(Processo.contribuinte_id == current_user.id)
+            .filter(Processo.contribuinte_id == contribuinte.id)
             .group_by(Processo.id)
             .all()
         )
@@ -183,11 +183,18 @@ def listarProcessos():
             )
             return render_template("home.html", mensagem=mensagem)
     else:
+        servidor = Servidor.query.filter(
+            Servidor.pessoa_id.like(usuario)
+        ).first()
+
         processos = (
             db.session.query(Processo, Atualizacao, Status)
             .select_from(Atualizacao)
-            .join(Processo)
             .join(Status)
+            .join(Processo)
+            .order_by(Atualizacao.id.desc())
+            .filter(Processo.servidor_id == servidor.id)
+            .group_by(Processo.id)
             .all()
         )
 
