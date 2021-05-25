@@ -180,7 +180,13 @@ def listarProcessos():
             )
             return render_template("home.html", mensagem=mensagem)
     else:
-        processos = Processo.query.all()
+        processos = (
+            db.session.query(Processo, Atualizacao, Status)
+            .select_from(Atualizacao)
+            .join(Processo)
+            .join(Status)
+            .all()
+        )
 
     return render_template("home.html", processos=processos)
 
