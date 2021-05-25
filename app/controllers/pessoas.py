@@ -166,11 +166,14 @@ def listarProcessos():
         processos = (
             db.session.query(Processo, Atualizacao, Status)
             .select_from(Atualizacao)
-            .join(Processo)
             .join(Status)
+            .join(Processo)
+            .order_by(Atualizacao.id.desc())
             .filter(Processo.contribuinte_id == current_user.id)
+            .group_by(Processo.id)
             .all()
         )
+        print(processos, file=sys.stderr)
 
         if processos:
             return render_template("home.html", processos=processos)
