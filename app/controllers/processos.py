@@ -20,6 +20,7 @@ from app.models.tables import (
     Atualizacao,
 )
 from datetime import datetime
+from werkzeug.utils import secure_filename
 import os, uuid, sys
 
 
@@ -36,39 +37,39 @@ def cadastrar_processos():
         tipo_processo = request.form["inputKind"]
         tipo_lote = request.form["inputType"]
         data_inicio = datetime.now()
-        copiaRG = request.files["inputCopiaRG"]
-        fileName = str(uuid.uuid4()) + ".pdf"
 
-        contribuinte_id = current_user.get_id()
-        # Contribuinte.query.filter_by(pessoa_id=contribuinte_id).first()
         contribuinte = Contribuinte.query.filter(
-            Contribuinte.pessoa_id.like(contribuinte_id)
+            Contribuinte.pessoa_id.like(current_user.id)
         ).first()
 
         app.logger.info(
-            "O seguinte usuário tentou criar um processo " + str(contribuinte_id)
+            "O seguinte usuário tentou criar um processo " + str(contribuinte.id)
         )
 
-        # filename = str(uuid.uuid4())
-        # filename = filename+".pdf"
         processo = Processo(
             nome=nome,
             numero=numero,
             tipo_processo=tipo_processo,
             tipo_lote=tipo_lote,
             data_inicio=data_inicio,
-            contribuinte_id=contribuinte.id,
+            contribuinte_id=current_user.id,
             servidor_id=1,
         )
         db.session.add(processo)
         db.session.commit()
 
+        pastaNova = "./app/uploads/" + str(processo.id)
+        os.makedirs(pastaNova)
+        arquivo = request.files["inputFile"]
+        if arquivo.filename != "":
+            arquivo.save(os.path.join(pastaNova, secure_filename(arquivo.filename)))
+
         atualizacao = Atualizacao(
             data_atualizacao=datetime.now(), status_id=1, processo_id=processo.id
         )
 
-        arquivo = ArquivoProcesso(
-            copiaRG=fileName,
+        a1 = ArquivoProcesso(
+            copiaRG=arquivo.filename,
             processo_id=processo.id,
         )
 
@@ -76,14 +77,7 @@ def cadastrar_processos():
             processo_id=processo.id,
         )
 
-        pastaNova = "./app/uploads/" + str(processo.id)
-        os.makedirs(pastaNova)
-
-        copiaRG.save(
-            os.path.join(app.config["UPLOAD_FOLDER"] + "/" + str(processo.id), fileName)
-        )
-
-        db.session.add(arquivo)
+        db.session.add(a1)
         db.session.add(checklist)
         db.session.add(atualizacao)
         db.session.commit()
