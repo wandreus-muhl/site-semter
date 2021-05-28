@@ -65,9 +65,11 @@ def cadastrar_processos():
             arquivo = request.files["inputFile"]
             arquivoAnalise = request.files["inputFileAnalises"]
 
-            if arquivo.filename != "":
-                arquivo.save(os.path.join(pastaNova, secure_filename(arquivo.filename)))
-                arquivoAnalise.save(os.path.join(pastaNova, secure_filename(arquivoAnalise.filename)))
+            arquivo.filename = str(uuid.uuid4())+".pdf"
+            arquivoAnalise.filename = str(uuid.uuid4())+".pdf"
+
+            arquivo.save(os.path.join(pastaNova, secure_filename(arquivo.filename)))
+            arquivoAnalise.save(os.path.join(pastaNova, secure_filename(arquivoAnalise.filename)))
 
             atualizacao = Atualizacao(
                 data_atualizacao=datetime.now(), status_id=1, processo_id=processo.id

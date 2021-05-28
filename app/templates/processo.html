@@ -48,7 +48,8 @@
                         <label for="inputCopiaRG" class="form-label">Documentação</label>
                         <br>
                         <a class="text-info cursor-pointer text-decoration-none"
-                        data-bs-toggle="modal" data-bs-target="#modalPDF" onclick="setDocumento({{ arquivo.copiaRG }})">CopiaRG</a>
+                        data-bs-toggle="modal" data-bs-target="#modalPDF" onclick="setDocumento('{{ arquivo.copiaRG }}')">CopiaRG</a>
+                        
 
                     </div>
                     <div class="text-secondary mt-4">
@@ -56,7 +57,7 @@
                         <label for="inputFileAnalises" class="form-label">Análises técnicas</label>
                         <br>
                         <a class="text-info cursor-pointer text-decoration-none"
-                        data-bs-toggle="modal" data-bs-target="#modalPDF" onclick="setDocumento({{ arquivo.projetoArt }})">Projeto ART/RRT</a>
+                        data-bs-toggle="modal" data-bs-target="#modalPDF" onclick="setDocumento('{{ arquivo.projetoArt }}')">Projeto ART/RRT</a>
                     </div>
                     {% if analise %}
                     <h1>ANALISE</h1>
@@ -109,24 +110,24 @@
 <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" id="modalPDF" aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-        
         <div class="ratio ratio-4x3 mb-2">
-            <iframe src="/processo/{{id_processo}}/arquivos/{{ arquivo.copiaRG }}"></iframe>
+            <iframe id="pdf" src="/processo/{{id_processo}}/arquivos/"></iframe>
             <!-- /processo/11/arquivos/Reuniao_16_04_2021.pdf -->
             <!-- Reunião 16_04_2021.pdf -->
             <!-- /processo/11/arquivos/carteira-trabalho.pdf -->
             <!-- carteira-trabalho.pdf  -->
         </div>
-
     </div>
   </div>
 </div>
 
 <script>
     let status = 0;
+    var a = "";
 
     function setDocumento(id){
-        var a = id
+        a = id
+        document.getElementById('pdf').src='/processo/{{id_processo}}/arquivos/'+a
     }
 
     function status_processo(id) {
