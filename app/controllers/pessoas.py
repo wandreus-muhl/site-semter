@@ -36,15 +36,21 @@ def login():
 
         if pessoa:
             auth = bcrypt.checkpw(senha.encode("utf-8"), pessoa.senha.encode("utf-8"))
-
         if not pessoa or not auth:
             mensagem = "E-mail ou senha inválidos"
             return render_template("login.html", mensagem=mensagem)
         else:
             login_user(pessoa)
-            return redirect("/home")
-
-
+            usuario = pessoa.id
+            servidor = Servidor.query.filter(Servidor.pessoa_id.like(usuario)).first()
+            contribuinte = Contribuinte.query.filter(Contribuinte.pessoa_id.like(usuario)).first()
+            if servidor:
+                return redirect("/analise_processo")
+            if contribuinte:
+                return redirect("/home")
+            else:
+                return redirect("/home")
+            
 @app.route("/cadastro", methods=["GET", "POST"])
 def cadastro():
     if request.method == "GET":

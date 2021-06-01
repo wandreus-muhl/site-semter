@@ -156,6 +156,7 @@ def visualizar_processo(id_processo):
         "processo.html",
         processo=processo,
         arquivos=arquivos,
+        arquivo=arquivo,
         id_processo=id_processo,
         status=status,
     )
@@ -190,11 +191,13 @@ def analise_de_processo(id_processo):
     analise = 1
     atualizacoes = Atualizacao.query.filter_by(processo_id=id_processo).first()
     status = Status.query.filter_by(id=atualizacoes.id).first()
+    arquivo = ArquivoProcesso.query.filter_by(processo_id=id_processo).first()
 
     return render_template(
         "processo.html",
         processo=processo,
         arquivos=arquivos,
+        arquivo=arquivo,
         analise=analise,
         id_processo=id_processo,
         status=status,
