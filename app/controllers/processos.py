@@ -62,23 +62,97 @@ def cadastrar_processos():
 
             pastaNova = "./app/uploads/" + str(processo.id)
             os.makedirs(pastaNova)
-            arquivo = request.files["inputFile"]
+
+            arquivoRequerimento = request.files["inputRequerimento"]
+            if arquivoRequerimento:
+                extensaoArquivo = arquivoRequerimento.filename.split(".")
+                extensaoArquivo = extensaoArquivo[len(extensaoArquivo) - 1]
+                arquivoRequerimento.filename = str(uuid.uuid4()) + "." + extensaoArquivo
+                arquivoRequerimento.save(
+                    os.path.join(
+                        pastaNova, secure_filename(arquivoRequerimento.filename)
+                    )
+                )
+
+            arquivoRG = request.files["inputCopiaRG"]
+            if arquivoRG:
+                extensaoArquivo = arquivoRG.filename.split(".")
+                extensaoArquivo = extensaoArquivo[len(extensaoArquivo) - 1]
+                arquivoRG.filename = str(uuid.uuid4()) + "." + extensaoArquivo
+                arquivoRG.save(
+                    os.path.join(pastaNova, secure_filename(arquivoRG.filename))
+                )
+
+            arquivoCPF = request.files["inputCopiaCPF"]
+            if arquivoCPF:
+                extensaoArquivo = arquivoCPF.filename.split(".")
+                extensaoArquivo = extensaoArquivo[len(extensaoArquivo) - 1]
+                arquivoCPF.filename = str(uuid.uuid4()) + "." + extensaoArquivo
+                arquivoCPF.save(
+                    os.path.join(pastaNova, secure_filename(arquivoCPF.filename))
+                )
+
+            arquivoCertPref = request.files["inputCertidaoPrefeitura"]
+            if arquivoCertPref:
+                extensaoArquivo = arquivoCertPref.filename.split(".")
+                extensaoArquivo = extensaoArquivo[len(extensaoArquivo) - 1]
+                arquivoCertPref.filename = str(uuid.uuid4()) + "." + extensaoArquivo
+                arquivoCertPref.save(
+                    os.path.join(pastaNova, secure_filename(arquivoCertPref.filename))
+                )
+
+            arquivoCertSAAE = request.files["inputCertidaoSAAE"]
+            if arquivoCertSAAE:
+                extensaoArquivo = arquivoCertSAAE.filename.split(".")
+                extensaoArquivo = extensaoArquivo[len(extensaoArquivo) - 1]
+                arquivoCertSAAE.filename = str(uuid.uuid4()) + "." + extensaoArquivo
+                arquivoCertSAAE.save(
+                    os.path.join(pastaNova, secure_filename(arquivoCertSAAE.filename))
+                )
+
+            arquivoTitulo = request.files["inputTituloImovel"]
+            if arquivoTitulo:
+                extensaoArquivo = arquivoTitulo.filename.split(".")
+                extensaoArquivo = extensaoArquivo[len(extensaoArquivo) - 1]
+                arquivoTitulo.filename = str(uuid.uuid4()) + "." + extensaoArquivo
+                arquivoTitulo.save(
+                    os.path.join(pastaNova, secure_filename(arquivoTitulo.filename))
+                )
+
+            arquivoComprovanteRest = request.files["inputComprovanteResidencia"]
+            if arquivoComprovanteRest:
+                extensaoArquivo = arquivoComprovanteRest.filename.split(".")
+                extensaoArquivo = extensaoArquivo[len(extensaoArquivo) - 1]
+                arquivoComprovanteRest.filename = (
+                    str(uuid.uuid4()) + "." + extensaoArquivo
+                )
+                arquivoComprovanteRest.save(
+                    os.path.join(
+                        pastaNova, secure_filename(arquivoComprovanteRest.filename)
+                    )
+                )
+
             arquivoAnalise = request.files["inputFileAnalises"]
-
-            arquivo.filename = str(uuid.uuid4()) + ".pdf"
-            arquivoAnalise.filename = str(uuid.uuid4()) + ".pdf"
-
-            arquivo.save(os.path.join(pastaNova, secure_filename(arquivo.filename)))
-            arquivoAnalise.save(
-                os.path.join(pastaNova, secure_filename(arquivoAnalise.filename))
-            )
+            if arquivoAnalise:
+                extensaoArquivo = arquivoAnalise.filename.split(".")
+                extensaoArquivo = extensaoArquivo[len(extensaoArquivo) - 1]
+                arquivoAnalise.filename = str(uuid.uuid4()) + "." + extensaoArquivo
+                arquivoAnalise.save(
+                    os.path.join(pastaNova, secure_filename(arquivoAnalise.filename))
+                )
 
             atualizacao = Atualizacao(
                 data_atualizacao=datetime.now(), status_id=1, processo_id=processo.id
             )
 
             a1 = ArquivoProcesso(
-                copiaRG=arquivo.filename,
+                requerimento=arquivoRequerimento.filename,
+                copiaRG=arquivoRG.filename,
+                certidaoNegativaPrefeitura=arquivoCertPref.filename,
+                certidaoNegativaSAAE=arquivoCertSAAE.filename,
+                tituloImovel=arquivoTitulo.filename,
+                copiaCPF=arquivoCPF.filename,
+                copiaComprovanteResidencia=arquivoComprovanteRest.filename,
                 projetoArt=arquivoAnalise.filename,
                 processo_id=processo.id,
             )
@@ -122,7 +196,7 @@ def cadastrar_processos():
 @app.route("/processo/<id_processo>/arquivos/<arquivo>")
 def enviaArquivos(id_processo, arquivo):
     # pasta = "./uploads/" + id_processo + "/" + arquivo
-    pasta = "./\\uploads\\" + id_processo + "\\" + arquivo
+    pasta = "./" + os.sep + "uploads" + id_processo + os.sep + arquivo
     return send_file(pasta, as_attachment=False)
 
 
@@ -184,11 +258,13 @@ def analise_de_processo(id_processo):
     analise = 1
     atualizacoes = Atualizacao.query.filter_by(processo_id=id_processo).first()
     status = Status.query.filter_by(id=atualizacoes.id).first()
+    arquivo = ArquivoProcesso.query.filter_by(processo_id=id_processo).first()
 
     return render_template(
         "processo.html",
         processo=processo,
         arquivos=arquivos,
+        arquivo=arquivo,
         analise=analise,
         id_processo=id_processo,
         status=status,

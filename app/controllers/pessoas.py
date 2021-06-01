@@ -2,6 +2,7 @@ from app import app, db, login_manager
 from flask import render_template, redirect, url_for, request, session
 from flask_login import login_required, current_user
 from flask_login import login_user, logout_user
+from sqlalchemy import func
 import sys
 from app.models.tables import (
     Pessoa,
@@ -35,15 +36,21 @@ def login():
 
         if pessoa:
             auth = bcrypt.checkpw(senha.encode("utf-8"), pessoa.senha.encode("utf-8"))
-
         if not pessoa or not auth:
             mensagem = "E-mail ou senha inválidos"
             return render_template("login.html", mensagem=mensagem)
         else:
             login_user(pessoa)
-            return redirect("/home")
-
-
+            usuario = pessoa.id
+            servidor = Servidor.query.filter(Servidor.pessoa_id.like(usuario)).first()
+            contribuinte = Contribuinte.query.filter(Contribuinte.pessoa_id.like(usuario)).first()
+            if servidor:
+                return redirect("/analise_processo")
+            if contribuinte:
+                return redirect("/home")
+            else:
+                return redirect("/home")
+            
 @app.route("/cadastro", methods=["GET", "POST"])
 def cadastro():
     if request.method == "GET":
@@ -163,29 +170,38 @@ def listarProcessos():
             "O seguinte usuário tentou mostrar seus processos: " + str(id_contribuinte)
         )
 
-        processos = (
-            db.session.query(Processo, Atualizacao, Status)
-            .select_from(Atualizacao)
-            .join(Status)
-            .join(Processo)
-            .order_by(Atualizacao.id.desc())
-            .filter(Processo.contribuinte_id == contribuinte.id)
-            .group_by(Processo.id)
+        subquery = (
+            db.session.query(
+                db.func.max(Atualizacao.id).label("max_id"),
+                Atualizacao.processo_id,
+                Atualizacao.status_id,
+            )
+            .group_by(Atualizacao.processo_id)
+            .subquery()
+        )
+
+        query = (
+            db.session.query(Atualizacao, Processo, Status)
+            .join(
+                subquery,
+                Atualizacao.id == subquery.c.max_id,
+            )
+            .join(Processo, Processo.id == Atualizacao.processo_id)
+            .join(Status, Status.id == Atualizacao.status_id)
             .all()
         )
-        print(processos, file=sys.stderr)
 
-        if processos:
-            return render_template("home.html", processos=processos)
+        print(query, file=sys.stderr)
+
+        if query:
+            return render_template("home.html", query=query)
         else:
             mensagem = (
                 "Você ainda não abriu nenhum processo. Clique no botão para começar."
             )
             return render_template("home.html", mensagem=mensagem)
     else:
-        servidor = Servidor.query.filter(
-            Servidor.pessoa_id.like(usuario)
-        ).first()
+        servidor = Servidor.query.filter(Servidor.pessoa_id.like(usuario)).first()
 
         processos = (
             db.session.query(Processo, Atualizacao, Status)
@@ -195,7 +211,7 @@ def listarProcessos():
             .order_by(Atualizacao.id.desc())
             .filter(Processo.servidor_id == servidor.id)
             .group_by(Processo.id)
-            .all()
+            .first()
         )
 
     return render_template("home.html", processos=processos)

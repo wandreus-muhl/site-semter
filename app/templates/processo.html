@@ -9,7 +9,6 @@
                 <form action="/alterar_processo/{{processo.id}}" method="POST" class="form"
                     enctype="multipart/form-data">
                     {% endif %}
-                    <h1>Processo {{ processo.id }}, {{ status.nome }} </h1>
                     <div class="row g-3 text-secondary d-flex flex-wrap row g-2">
                         <div class="col-xs-6 col-md-6">
                             <i class="bi bi-pencil-square"></i>
@@ -48,9 +47,25 @@
                         <label for="inputCopiaRG" class="form-label">Documentação</label>
                         <br>
                         <a class="text-info cursor-pointer text-decoration-none"
-                        data-bs-toggle="modal" data-bs-target="#modalPDF" onclick="setDocumento('{{ arquivo.copiaRG }}')">CopiaRG</a>
-                        
-
+                        data-bs-toggle="modal" data-bs-target="#modalPDF" onclick="setDocumento('{{ arquivo.requerimento }}')">Requerimento</a>
+                        <br>
+                        <a class="text-info cursor-pointer text-decoration-none"
+                        data-bs-toggle="modal" data-bs-target="#modalPDF" onclick="setDocumento('{{ arquivo.copiaRG }}')">Cópia RG</a>
+                        <br>
+                        <a class="text-info cursor-pointer text-decoration-none"
+                        data-bs-toggle="modal" data-bs-target="#modalPDF" onclick="setDocumento('{{ arquivo.copiaCPF }}')">Cópia CPF</a>
+                        <br>
+                        <a class="text-info cursor-pointer text-decoration-none"
+                        data-bs-toggle="modal" data-bs-target="#modalPDF" onclick="setDocumento('{{ arquivo.certidaoNegativaPrefeitura }}')">Certidão Negativa Prefeitura</a>
+                        <br>
+                        <a class="text-info cursor-pointer text-decoration-none"
+                        data-bs-toggle="modal" data-bs-target="#modalPDF" onclick="setDocumento('{{ arquivo.certidaoNegativaSAAE }}')">Certidão Negativa SAAE</a>
+                        <br>
+                        <a class="text-info cursor-pointer text-decoration-none"
+                        data-bs-toggle="modal" data-bs-target="#modalPDF" onclick="setDocumento('{{ arquivo.tituloImovel }}')">Título do Imóvel</a>
+                        <br>
+                        <a class="text-info cursor-pointer text-decoration-none"
+                        data-bs-toggle="modal" data-bs-target="#modalPDF" onclick="setDocumento('{{ arquivo.copiaComprovanteResidencia }}')">Comprovante de Residência</a>
                     </div>
                     <div class="text-secondary mt-4">
                         <i class="bi bi-file-earmark-arrow-up-fill"></i>
@@ -104,6 +119,7 @@
         </div>
     </div>
 </div>
+
 
 
 
