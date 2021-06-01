@@ -63,12 +63,54 @@ def cadastrar_processos():
             pastaNova = "./app/uploads/" + str(processo.id)
             os.makedirs(pastaNova)
 
-            arquivo = request.files["inputFile"]
-            if arquivo:
-                extensaoArquivo = arquivo.filename.split(".")
+            arquivoRequerimento = request.files["inputRequerimento"]
+            if arquivoRequerimento:
+                extensaoArquivo = arquivoRequerimento.filename.split(".")
                 extensaoArquivo = extensaoArquivo[len(extensaoArquivo) - 1]
-                arquivo.filename = str(uuid.uuid4()) + "." + extensaoArquivo
-                arquivo.save(os.path.join(pastaNova, secure_filename(arquivo.filename)))
+                arquivoRequerimento.filename = str(uuid.uuid4()) + "." + extensaoArquivo
+                arquivoRequerimento.save(os.path.join(pastaNova, secure_filename(arquivoRequerimento.filename)))
+
+            arquivoRG = request.files["inputCopiaRG"]
+            if arquivoRG:
+                extensaoArquivo = arquivoRG.filename.split(".")
+                extensaoArquivo = extensaoArquivo[len(extensaoArquivo) - 1]
+                arquivoRG.filename = str(uuid.uuid4()) + "." + extensaoArquivo
+                arquivoRG.save(os.path.join(pastaNova, secure_filename(arquivoRG.filename)))
+
+            arquivoCPF = request.files["inputCopiaCPF"]
+            if arquivoCPF:
+                extensaoArquivo = arquivoCPF.filename.split(".")
+                extensaoArquivo = extensaoArquivo[len(extensaoArquivo) - 1]
+                arquivoCPF.filename = str(uuid.uuid4()) + "." + extensaoArquivo
+                arquivoCPF.save(os.path.join(pastaNova, secure_filename(arquivoCPF.filename)))
+
+            arquivoCertPref = request.files["inputCertidaoPrefeitura"]
+            if arquivoCertPref:
+                extensaoArquivo = arquivoCertPref.filename.split(".")
+                extensaoArquivo = extensaoArquivo[len(extensaoArquivo) - 1]
+                arquivoCertPref.filename = str(uuid.uuid4()) + "." + extensaoArquivo
+                arquivoCertPref.save(os.path.join(pastaNova, secure_filename(arquivoCertPref.filename)))
+
+            arquivoCertSAAE = request.files["inputCertidaoSAAE"]
+            if arquivoCertSAAE:
+                extensaoArquivo = arquivoCertSAAE.filename.split(".")
+                extensaoArquivo = extensaoArquivo[len(extensaoArquivo) - 1]
+                arquivoCertSAAE.filename = str(uuid.uuid4()) + "." + extensaoArquivo
+                arquivoCertSAAE.save(os.path.join(pastaNova, secure_filename(arquivoCertSAAE.filename)))
+
+            arquivoTitulo = request.files["inputTituloImovel"]
+            if arquivoTitulo:
+                extensaoArquivo = arquivoTitulo.filename.split(".")
+                extensaoArquivo = extensaoArquivo[len(extensaoArquivo) - 1]
+                arquivoTitulo.filename = str(uuid.uuid4()) + "." + extensaoArquivo
+                arquivoTitulo.save(os.path.join(pastaNova, secure_filename(arquivoTitulo.filename)))
+
+            arquivoComprovanteRest = request.files["inputComprovanteResidencia"]
+            if arquivoComprovanteRest:
+                extensaoArquivo = arquivoComprovanteRest.filename.split(".")
+                extensaoArquivo = extensaoArquivo[len(extensaoArquivo) - 1]
+                arquivoComprovanteRest.filename = str(uuid.uuid4()) + "." + extensaoArquivo
+                arquivoComprovanteRest.save(os.path.join(pastaNova, secure_filename(arquivoComprovanteRest.filename)))
 
             arquivoAnalise = request.files["inputFileAnalises"]
             if arquivoAnalise:
@@ -85,7 +127,13 @@ def cadastrar_processos():
             )
 
             a1 = ArquivoProcesso(
-                copiaRG=arquivo.filename,
+                requerimento=arquivoRequerimento.filename,
+                copiaRG=arquivoRG.filename,
+                certidaoNegativaPrefeitura=arquivoCertPref.filename,
+                certidaoNegativaSAAE=arquivoCertSAAE.filename,
+                tituloImovel=arquivoTitulo.filename,
+                copiaCPF=arquivoCPF.filename,
+                copiaComprovanteResidencia=arquivoComprovanteRest.filename,
                 projetoArt=arquivoAnalise.filename,
                 processo_id=processo.id,
             )
