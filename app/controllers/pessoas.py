@@ -191,8 +191,6 @@ def listarProcessos():
             .all()
         )
 
-        print(query, file=sys.stderr)
-
         if query:
             return render_template("home.html", query=query)
         else:

@@ -195,8 +195,7 @@ def cadastrar_processos():
 
 @app.route("/processo/<id_processo>/arquivos/<arquivo>")
 def enviaArquivos(id_processo, arquivo):
-    # pasta = "./uploads/" + id_processo + "/" + arquivo
-    pasta = "./" + os.sep + "uploads" + id_processo + os.sep + arquivo
+    pasta = "./" + os.sep + "uploads" + os.sep + id_processo + os.sep + arquivo
     return send_file(pasta, as_attachment=False)
 
 

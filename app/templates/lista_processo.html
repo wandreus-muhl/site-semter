@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block conteudo %}
-    <h3>Análises pendentes</h3>
+    <h3 class="title">Análises pendentes</h3>
     <div class="row g-2 mb-2 mt-3">
         {% if mensagem %}
         <p>{{ mensagem }}</p>
@@ -10,7 +10,7 @@
             <a href="/processo/{{ p.id }}" class="text-decoration-none text-dark">
             <div class="px-2 shadow border-start border-30 border-warning">
                 <div class="border-bottom">
-                    <h3>{{ p.nome }}</h3>
+                    <h3 class="title">{{ p.nome }}</h3>
                     <p>{{ p.data_inicio }}</p>
                 </div>
                 <p>{{ p.tipo_processo }}</p>

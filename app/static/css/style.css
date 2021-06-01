@@ -24,8 +24,8 @@
 	border-width: 30px !important;
 }
 
-.border-yale {
-	border-color: #044B7F !important;
+.border-blue-flag {
+	border-color: #3366FF !important;
 }
 
 .border-orange {
@@ -44,14 +44,14 @@
 	border-color: #FFFF00 !important;
 }
 
-.bg-yale {
-	background: #044B7F !important;
+.bg-blue-flag {
+	background: #3366FF !important;
 }
 
-.btn-yale {
-	background: #044B7F !important;
+.btn-blue-flag {
+	background: #3366FF !important;
 }
 
-.text-yale {
-	color: #044B7F !important;
+.text-blue-flag {
+	color: #3366FF !important;
 }
