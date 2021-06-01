@@ -9,7 +9,6 @@
                 <form action="/alterar_processo/{{processo.id}}" method="POST" class="form"
                     enctype="multipart/form-data">
                     {% endif %}
-                    <h1>Processo {{ processo.id }}, {{ status.nome }} </h1>
                     <div class="row g-3 text-secondary d-flex flex-wrap row g-2">
                         <div class="col-xs-6 col-md-6">
                             <i class="bi bi-pencil-square"></i>
@@ -47,16 +46,17 @@
                         <i class="bi bi-file-earmark-arrow-up-fill"></i>
                         <label for="inputCopiaRG" class="form-label">Documentação</label>
                         <br>
-                        <a class="text-info cursor-pointer text-decoration-none"
-                        data-bs-toggle="modal" data-bs-target="#modalPDF">CopiaRG</a>
+                        {% for a in arquivos%}
+                        <div class="ratio ratio-4x3 mb-2">
+                            <iframe src="/processo/{{id_processo}}/arquivos/{{a}}"></iframe>
+                        </div>
+                        {% endfor %}
 
                     </div>
                     <div class="text-secondary mt-4">
                         <i class="bi bi-file-earmark-arrow-up-fill"></i>
                         <label for="inputFileAnalises" class="form-label">Análises técnicas</label>
-                        <br>
-                        <a class="text-info cursor-pointer text-decoration-none"
-                        data-bs-toggle="modal" data-bs-target="#modalPDF">Projeto ART/RRT</a>
+                        <input type="file" class="form-control form-control-file">
                     </div>
                     {% if analise %}
                     <h1>ANALISE</h1>
@@ -103,28 +103,4 @@
         </div>
     </div>
 </div>
-
-
-
-<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" id="modalPDF" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-        {% for a in arquivos %}
-        <div class="ratio ratio-4x3 mb-2">
-            <iframe src="/processo/{{id_processo}}/arquivos/{{a}}"></iframe>
-        </div>
-        {% endfor %}
-    </div>
-  </div>
-</div>
-
-<script>
-    let status = 0;
-
-    function status_processo(id) {
-        status = id
-        let url = "/processo_analisado/{{processo.id}}/" + status
-        window.location.href = url
-    }
-</script>
 {% endblock %}
