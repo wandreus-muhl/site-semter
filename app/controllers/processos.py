@@ -31,7 +31,7 @@ def cadastrar_processos():
         return render_template("cadastro_processo.html")
 
     if request.method == "POST":
-        
+
         contribuinte = Contribuinte.query.filter(
             Contribuinte.pessoa_id.like(current_user.id)
         ).first()
@@ -62,14 +62,23 @@ def cadastrar_processos():
 
             pastaNova = "./app/uploads/" + str(processo.id)
             os.makedirs(pastaNova)
+
             arquivo = request.files["inputFile"]
+            if arquivo:
+                extensaoArquivo = arquivo.filename.split(".")
+                extensaoArquivo = extensaoArquivo[len(extensaoArquivo) - 1]
+                arquivo.filename = str(uuid.uuid4()) + "." + extensaoArquivo
+                arquivo.save(os.path.join(pastaNova, secure_filename(arquivo.filename)))
+
             arquivoAnalise = request.files["inputFileAnalises"]
+            if arquivoAnalise:
+                extensaoArquivo = arquivoAnalise.filename.split(".")
+                extensaoArquivo = extensaoArquivo[len(extensaoArquivo) - 1]
+                arquivoAnalise.filename = str(uuid.uuid4()) + "." + extensaoArquivo
+                arquivoAnalise.save(
+                    os.path.join(pastaNova, secure_filename(arquivoAnalise.filename))
+                )
 
-            arquivo.filename = str(uuid.uuid4())+".pdf"
-            arquivoAnalise.filename = str(uuid.uuid4())+".pdf"
-
-            arquivo.save(os.path.join(pastaNova, secure_filename(arquivo.filename)))
-            arquivoAnalise.save(os.path.join(pastaNova, secure_filename(arquivoAnalise.filename)))
 
             atualizacao = Atualizacao(
                 data_atualizacao=datetime.now(), status_id=1, processo_id=processo.id
@@ -108,7 +117,9 @@ def cadastrar_processos():
             db.session.commit()
 
         else:
-            mensagem = "Você não está cadastrado como contribuinte para cadastrar processos"
+            mensagem = (
+                "Você não está cadastrado como contribuinte para cadastrar processos"
+            )
 
             return render_template("home.html", mensagem=mensagem)
 
@@ -117,7 +128,7 @@ def cadastrar_processos():
 
 @app.route("/processo/<id_processo>/arquivos/<arquivo>")
 def enviaArquivos(id_processo, arquivo):
-    #pasta = "./\\uploads\\" + id_processo + "\\" + arquivo
+    # pasta = "./\\uploads\\" + id_processo + "\\" + arquivo
     pasta = "./uploads/" + id_processo + "/" + arquivo
     return send_file(pasta, as_attachment=False)
 
@@ -142,7 +153,11 @@ def visualizar_processo(id_processo):
     arquivo = ArquivoProcesso.query.filter_by(processo_id=id_processo).first()
 
     return render_template(
-        "processo.html", processo=processo, arquivos=arquivos, id_processo=id_processo, status=status, arquivo=arquivo
+        "processo.html",
+        processo=processo,
+        arquivos=arquivos,
+        id_processo=id_processo,
+        status=status,
     )
 
 
@@ -177,7 +192,12 @@ def analise_de_processo(id_processo):
     status = Status.query.filter_by(id=atualizacoes.id).first()
 
     return render_template(
-        "processo.html", processo=processo, arquivos=arquivos, analise=analise, id_processo=id_processo, status=status
+        "processo.html",
+        processo=processo,
+        arquivos=arquivos,
+        analise=analise,
+        id_processo=id_processo,
+        status=status,
     )
 
 
