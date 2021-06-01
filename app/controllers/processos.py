@@ -79,6 +79,7 @@ def cadastrar_processos():
                     os.path.join(pastaNova, secure_filename(arquivoAnalise.filename))
                 )
 
+
             atualizacao = Atualizacao(
                 data_atualizacao=datetime.now(), status_id=1, processo_id=processo.id
             )
@@ -149,6 +150,7 @@ def visualizar_processo(id_processo):
 
     atualizacoes = Atualizacao.query.filter_by(processo_id=id_processo).first()
     status = Status.query.filter_by(id=atualizacoes.id).first()
+    arquivo = ArquivoProcesso.query.filter_by(processo_id=id_processo).first()
 
     return render_template(
         "processo.html",
