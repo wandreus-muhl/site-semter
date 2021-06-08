@@ -2,13 +2,6 @@
 
 <p align="center">Site desenvolvido para faciltar o trâmite de processos na Secretaria Municipal de Terras de Vilhena-RO. O projeto ocorreu durante a disciplina de Projeto Integrador e de Extensão II - 5 semestre de Análise e Desenvolvimento de Sistemas</p>
 
-<p align="center">
- <a href="#objetivo">Objetivo</a> •
- <a href="#tecnologias">Tecnologias</a> • 
- <a href="#licenca">Licença</a> • 
- <a href="#autor">Autor</a>
-</p>
-
 <h4 align="center"> 
 	🚧  Em desenvolvimento...  🚧
 </h4>
