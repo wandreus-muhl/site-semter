@@ -3,6 +3,7 @@ from flask import render_template, redirect, url_for, request, session
 from flask_login import login_required, current_user
 from flask_login import login_user, logout_user
 from sqlalchemy import func
+from datetime import date, datetime
 import sys, uuid
 from app.models.tables import (
     Pessoa,
@@ -191,10 +192,15 @@ def listarProcessos():
             )
             .join(Processo, Processo.id == Atualizacao.processo_id)
             .join(Status, Status.id == Atualizacao.status_id)
+            .order_by(Status.id)
             .all()
         )
 
         if query:
+            for r in query:
+                r.Atualizacao.data_atualizacao = (
+                    r.Atualizacao.data_atualizacao.strftime("%d/%m/%Y - %H:%M")
+                )
             return render_template("home.html", query=query)
         else:
             mensagem = (

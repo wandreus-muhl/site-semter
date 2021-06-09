@@ -13,9 +13,12 @@
             <div class="shadow px-2 pt-2 border-yellow border-start border-30">
                 <div class="border-bottom">
                     <h3 class="title">{{ processo.nome }}</h3>
-                    <p>{{ atualizacao.data_atualizacao }}</p>
                 </div>
-                <p class="py-2">{{ processo.tipo_processo }}</p>
+                <div class="d-flex text-secondary">
+                    <p class="me-1">Encaminhado</p>
+                    <p>({{ atualizacao.data_atualizacao }})</p>
+                </div>
+                <p class="">{{ processo.tipo_processo }}</p>           
             </div>
         </a>
     </div>
@@ -26,9 +29,12 @@
             <div class="shadow px-2 pt-2 border-green border-start border-30">
                 <div class="border-bottom">
                     <h3 class="title">{{ processo.nome }}</h3>
-                    <p>{{ atualizacao.data_atualizacao }}</p>
                 </div>
-                <p class="py-2">{{ processo.tipo_processo }}</p>
+                <div class="d-flex text-secondary">
+                    <p class="me-1">Aprovado</p>
+                    <p>({{ atualizacao.data_atualizacao }})</p>
+                </div>
+                <p class="">{{ processo.tipo_processo }}</p>      
             </div>
         </a>
     </div>
@@ -39,9 +45,12 @@
             <div class="shadow px-2 pt-2 border-red border-start border-30">
                 <div class="border-bottom">
                     <h3 class="title">{{ processo.nome }}</h3>
-                    <p>{{ atualizacao.data_atualizacao }}</p>
                 </div>
-                <p class="py-2">{{ processo.tipo_processo }}</p>
+                <div class="d-flex text-secondary">
+                    <p class="me-1">Não aprovado</p>
+                    <p>({{ atualizacao.data_atualizacao }})</p>
+                </div>
+                <p class="">{{ processo.tipo_processo }}</p>      
             </div>
         </a>
     </div>
@@ -52,9 +61,12 @@
             <div class="shadow px-2 pt-2 border-orange border-start border-30">
                 <div class="border-bottom">
                     <h3 class="title">{{ processo.nome }}</h3>
-                    <p>{{ atualizacao.data_atualizacao }}</p>
                 </div>
-                <p class="py-2">{{ processo.tipo_processo }}</p>
+                <div class="d-flex text-secondary">
+                    <p class="me-1">Existem pendências</p>
+                    <p>({{ atualizacao.data_atualizacao }})</p>
+                </div>
+                <p class="">{{ processo.tipo_processo }}</p>      
             </div>
         </a>
     </div>
@@ -65,9 +77,12 @@
             <div class="shadow px-2 pt-2 border-yellow border-start border-30">
                 <div class="border-bottom">
                     <h3 class="title">{{ processo.nome }}</h3>
-                    <p>{{ atualizacao.data_atualizacao }}</p>
                 </div>
-                <p class="py-2">{{ processo.tipo_processo }}</p>
+                <div class="d-flex text-secondary">
+                    <p class="me-1">Em análise</p>
+                    <p>({{ atualizacao.data_atualizacao }})</p>
+                </div>
+                <p class="">{{ processo.tipo_processo }}</p>      
             </div>
         </a>
     </div>
