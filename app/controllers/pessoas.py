@@ -65,11 +65,18 @@ def cadastro():
         nome = request.form["inputName"]
         cpf = request.form["inputCPF"]
         email = request.form["inputEmail"]
+        
+        existe_email = Pessoa.query.filter_by(email=email).first()
+        if existe_email:
+            mensagem = "Email já cadastrado"
+            return render_template("cadastro.html", mensagem=mensagem)
+        
         if request.form["inputPassword"] == request.form["inputPasswordConfirm"]:
             senha = request.form["inputPassword"]
         else:
             mensagem = "As senhas não correspondem"
             return render_template("cadastro.html", mensagem=mensagem)
+        
         senhaEcriptada = bcrypt.hashpw(senha.encode("UTF-8"), bcrypt.gensalt())
         contato = request.form["inputPhone"]
         data_cadastro = datetime.now()
@@ -222,11 +229,6 @@ def listarProcessos():
         )
 
     return render_template("home.html", processos=processos)
-
-
-@app.route("/")
-def index():
-    return render_template("index.html")
 
 
 @app.route("/esqueci_minha_senha", methods=["GET", "POST"])

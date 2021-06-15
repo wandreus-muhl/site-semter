@@ -24,6 +24,44 @@ from werkzeug.utils import secure_filename
 import os, uuid, sys
 
 
+@app.route("/", methods=["GET", "POST"])
+def index():
+    if request.method == "GET":
+        return render_template("index.html")
+
+    if request.method == "POST":
+        pesquisa = request.form["inputSearch"]
+        processo = Processo.query.filter_by(numero=pesquisa).first()
+
+        subquery = (
+            db.session.query(
+                db.func.max(Atualizacao.id).label("max_id"),
+                Atualizacao.processo_id,
+                Atualizacao.status_id,
+            )
+            .group_by(Atualizacao.processo_id)
+            .subquery()
+        )
+
+        query = (
+            db.session.query(Atualizacao, Processo, Status)
+            .join(
+                subquery,
+                Atualizacao.id == subquery.c.max_id,
+            )
+            .join(Processo, Processo.id == Atualizacao.processo_id)
+            .join(Status, Status.id == Atualizacao.status_id)
+            .filter(Processo.id == pesquisa)
+            .order_by(Status.id)
+            .all()
+        )
+        if not query:
+            mensagem = "Não há processos correspondentes com a pesquisa"
+            return render_template("index.html", mensagem=mensagem)
+
+        return render_template("index.html", query=query)
+
+
 @app.route("/novo_processo", methods=["GET", "POST"])
 @login_required
 def cadastrar_processos():
