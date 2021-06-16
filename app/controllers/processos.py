@@ -39,7 +39,6 @@ def cadastrar_processos():
         if contribuinte:
 
             nome = request.form["inputName"]
-            numero = request.form["inputNumber"]
             tipo_processo = request.form["inputKind"]
             tipo_lote = request.form["inputType"]
             data_inicio = datetime.now()
@@ -50,7 +49,6 @@ def cadastrar_processos():
 
             processo = Processo(
                 nome=nome,
-                numero=numero,
                 tipo_processo=tipo_processo,
                 tipo_lote=tipo_lote,
                 data_inicio=data_inicio,
@@ -58,6 +56,11 @@ def cadastrar_processos():
                 servidor_id=1,
             )
             db.session.add(processo)
+            db.session.commit()
+
+            id = str(processo.id)
+
+            processo.numero = f"{id.zfill(4)}/{data_inicio.year}"
             db.session.commit()
 
             pastaNova = "./app/uploads/" + str(processo.id)
