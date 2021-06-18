@@ -77,12 +77,23 @@ class Atualizacao(db.Model):
     processo_id = db.Column(db.Integer, db.ForeignKey("processos.id"), nullable=False)
 
 
+class Terreno(db.Model):
+    __tablename__ = "terrenos"
+
+    id = db.Column(db.Integer, primary_key=True)
+    lote = db.Column(db.String(10), nullable=False)
+    quadra = db.Column(db.String(10), nullable=False)
+    setor = db.Column(db.String(10), nullable=False)
+    rua = db.Column(db.String(45), nullable=False)
+    bairro = db.Column(db.String(45), nullable=False)
+    numero = db.Column(db.Integer, nullable=False)
+
+
 class Processo(db.Model):
     __tablename__ = "processos"
 
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(250))
-    numero = db.Column(db.Integer, nullable=False)
     tipo_processo = db.Column(db.String(250), nullable=False)
     tipo_lote = db.Column(db.String(250), nullable=False)
     data_inicio = db.Column(db.DateTime, nullable=False)
@@ -92,6 +103,9 @@ class Processo(db.Model):
     contribuinte_id = db.Column(
         db.Integer, db.ForeignKey("contribuintes.id"), nullable=False
     )  # Quando tiver o status certo de encaminhado, colocar aqui!
+    terreno_id = db.Column(
+        db.Integer, db.ForeignKey("terrenos.id"), nullable=False
+    ) 
 
     def _repr_(self):
         return "<Processo %d>" % self.cod_processo
@@ -136,3 +150,4 @@ class CheckList(db.Model):
     ARTApresentado = db.Column(db.Boolean)
     memorialDescritivo = db.Column(db.Boolean)
     processo_id = db.Column(db.Integer, db.ForeignKey("processos.id"))
+

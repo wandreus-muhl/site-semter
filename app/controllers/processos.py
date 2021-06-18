@@ -18,6 +18,7 @@ from app.models.tables import (
     ArquivoProcesso,
     CheckList,
     Atualizacao,
+    Terreno,
 )
 from datetime import datetime
 from werkzeug.utils import secure_filename
@@ -39,10 +40,27 @@ def cadastrar_processos():
         if contribuinte:
 
             nome = request.form["inputName"]
-            numero = request.form["inputNumber"]
             tipo_processo = request.form["inputKind"]
             tipo_lote = request.form["inputType"]
             data_inicio = datetime.now()
+
+            rua = request.form["inputRua"]
+            numero = request.form["inputNumber"]
+            bairro = request.form["inputBairro"]
+            lote = request.form["inputLote"]
+            quadra = request.form["inputQuadra"]
+            setor = request.form["inputSetor"]
+
+            terreno = Terreno(
+                lote=lote,
+                quadra=quadra,
+                setor=setor,
+                rua=rua,
+                bairro=bairro,
+                numero=numero,
+            )
+            db.session.add(terreno)
+            db.session.commit()
 
             app.logger.info(
                 "O seguinte usuário tentou criar um processo " + str(contribuinte.id)
@@ -50,11 +68,11 @@ def cadastrar_processos():
 
             processo = Processo(
                 nome=nome,
-                numero=numero,
                 tipo_processo=tipo_processo,
                 tipo_lote=tipo_lote,
                 data_inicio=data_inicio,
                 contribuinte_id=contribuinte.id,
+                terreno_id=terreno.id,
                 servidor_id=1,
             )
             db.session.add(processo)
@@ -214,9 +232,12 @@ def visualizar_processo(id_processo):
     processo = Processo.query.filter_by(id=id_processo).first()
     arquivos = os.listdir("./app/uploads/" + id_processo + "/")
 
+    id_terreno = processo.terreno_id
+
     atualizacoes = Atualizacao.query.filter_by(processo_id=id_processo).first()
     status = Status.query.filter_by(id=atualizacoes.id).first()
     arquivo = ArquivoProcesso.query.filter_by(processo_id=id_processo).first()
+    terreno = Terreno.query.filter_by(id=processo.terreno_id).first()
 
     return render_template(
         "processo.html",
@@ -225,6 +246,7 @@ def visualizar_processo(id_processo):
         id_processo=id_processo,
         status=status,
         arquivo=arquivo,
+        terreno=terreno,
     )
 
 
@@ -258,6 +280,7 @@ def analise_de_processo(id_processo):
     atualizacoes = Atualizacao.query.filter_by(processo_id=id_processo).first()
     status = Status.query.filter_by(id=atualizacoes.id).first()
     arquivo = ArquivoProcesso.query.filter_by(processo_id=id_processo).first()
+    terreno = Terreno.query.filter_by(id=processo.terreno_id).first()
 
     return render_template(
         "processo.html",
@@ -267,6 +290,7 @@ def analise_de_processo(id_processo):
         analise=analise,
         id_processo=id_processo,
         status=status,
+        terreno=terreno,
     )
 
 
