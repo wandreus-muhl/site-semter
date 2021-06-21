@@ -9,7 +9,7 @@
 
 .title {
 	font-family: 'Rubik' !important;
-	font-weight: semibold;
+	font-weight: bold;
 }
 
 .capitalized {
@@ -29,19 +29,19 @@
 }
 
 .border-orange {
-	border-color: #FFA500 !important;
+	border-color: #D98004 !important;
 }
 
 .border-green {
-	border-color: #00FF6B !important;
+	border-color: #3DFC78 !important;
 }
 
 .border-red {
-	border-color: #ED2939 !important;
+	border-color: #9C0B2F !important;
 }
 
 .border-yellow {
-	border-color: #FFFF00 !important;
+	border-color: #E6D043 !important;
 }
 
 .bg-blue-flag {

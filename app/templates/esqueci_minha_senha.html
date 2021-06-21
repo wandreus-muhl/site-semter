@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block conteudo %}
+<div class="row justify-content-center mt-5">
+    <div class="form-title title mb-16">
+        <h1>Esqueci minha senha</h1>
+    </div>
+    <div class="form">
+        <form method="POST">
+            <div class="form-group mb-16">
+                <label for="inputEmail" class="form-label mb-16"><i class="bi bi-envelope-fill"></i> Email</label>
+                <input type="email" name="inputEmail" id="inputEmail" class="form-input" required>
+            </div>
+
+            <p class="mb-16">{{mensagem}}</p>
+
+            <div class="mb-16">
+                <input type="submit" value="Enviar" class="btn w-100"></input>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

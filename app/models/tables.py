@@ -13,6 +13,7 @@ class Pessoa(db.Model, UserMixin):
     senha = db.Column(db.String(200), nullable=False)
     contato = db.Column(db.String(45))
     data_cadastro = db.Column(db.DateTime, nullable=False)
+    token = db.Column(db.String(255))
 
     def __repr__(self):
         return "<Pessoa %s>" % self.nome
