@@ -116,6 +116,11 @@ def cadastrar_processos():
             db.session.add(processo)
             db.session.commit()
 
+            id = str(processo.id)
+
+            processo.numero = f"{id.zfill(4)}/{data_inicio.year}"
+            db.session.commit()
+
             pastaNova = "./app/uploads/" + str(processo.id)
             os.makedirs(pastaNova)
 

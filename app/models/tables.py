@@ -95,6 +95,7 @@ class Processo(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(250))
+    numero = db.Column(db.String(250))
     tipo_processo = db.Column(db.String(250), nullable=False)
     tipo_lote = db.Column(db.String(250), nullable=False)
     data_inicio = db.Column(db.DateTime, nullable=False)
@@ -103,7 +104,7 @@ class Processo(db.Model):
     servidor_id = db.Column(db.Integer, db.ForeignKey("servidores.id"))
     contribuinte_id = db.Column(
         db.Integer, db.ForeignKey("contribuintes.id"), nullable=False
-    )  # Quando tiver o status certo de encaminhado, colocar aqui!
+    )
     terreno_id = db.Column(
         db.Integer, db.ForeignKey("terrenos.id"), nullable=False
     ) 
