@@ -177,7 +177,6 @@ def cadastrar_processos():
 
             checklist = CheckList(
                 processo_id=processo.id,
-                requerimento=False,
                 CNDPrefeitura=False,
                 CNDSAAE=False,
                 tituloImovel=False,
@@ -297,8 +296,13 @@ def analise_de_processo(id_processo):
 @app.route("/processo_analisado/<id_processo>/<status>", methods=["GET", "POST"])
 @login_required
 def processo_analisado(id_processo, status):
-    # checkBoxRequerimento = request.form["checkBoxRequerimento"]
-    checkBoxRequerimento = True
+    checkBoxRequerimento = 'checkBoxRequerimento' in request.form
+    #checkBoxRequerimento = True
+    checkBoxCNDPrefeitura = request.form.getlist('checkBoxCNDPrefeitura')
+    selecionado = bool(checkBoxCNDPrefeitura)
+    print(checkBoxRequerimento)
+    print(selecionado)
+
     checklist = CheckList.query.filter_by(processo_id=id_processo).first()
 
     data_inicio = datetime.now()
@@ -312,6 +316,7 @@ def processo_analisado(id_processo, status):
     processo = Processo.query.filter_by(id=id_processo).first()
     processo.atualizacao_id = atualizacao.id
     checklist.requerimento = checkBoxRequerimento
+    checklist.CNDPrefeitura = selecionado
 
     db.session.commit()
 
