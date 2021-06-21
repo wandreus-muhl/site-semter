@@ -13,6 +13,7 @@ class Pessoa(db.Model, UserMixin):
     senha = db.Column(db.String(200), nullable=False)
     contato = db.Column(db.String(45))
     data_cadastro = db.Column(db.DateTime, nullable=False)
+    token = db.Column(db.String(255))
 
     def __repr__(self):
         return "<Pessoa %s>" % self.nome
@@ -77,6 +78,18 @@ class Atualizacao(db.Model):
     processo_id = db.Column(db.Integer, db.ForeignKey("processos.id"), nullable=False)
 
 
+class Terreno(db.Model):
+    __tablename__ = "terrenos"
+
+    id = db.Column(db.Integer, primary_key=True)
+    lote = db.Column(db.String(10), nullable=False)
+    quadra = db.Column(db.String(10), nullable=False)
+    setor = db.Column(db.String(10), nullable=False)
+    rua = db.Column(db.String(45), nullable=False)
+    bairro = db.Column(db.String(45), nullable=False)
+    numero = db.Column(db.Integer, nullable=False)
+
+
 class Processo(db.Model):
     __tablename__ = "processos"
 
@@ -92,6 +105,9 @@ class Processo(db.Model):
     contribuinte_id = db.Column(
         db.Integer, db.ForeignKey("contribuintes.id"), nullable=False
     )
+    terreno_id = db.Column(
+        db.Integer, db.ForeignKey("terrenos.id"), nullable=False
+    ) 
 
     def _repr_(self):
         return "<Processo %d>" % self.cod_processo
@@ -136,3 +152,4 @@ class CheckList(db.Model):
     ARTApresentado = db.Column(db.Boolean)
     memorialDescritivo = db.Column(db.Boolean)
     processo_id = db.Column(db.Integer, db.ForeignKey("processos.id"))
+

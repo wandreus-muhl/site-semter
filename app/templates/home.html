@@ -7,54 +7,66 @@
 
     {% for atualizacao, processo, status in query %}
 
-    {% if status.id == 1 %}
+    {% if status.nome == "Encaminhado" %}
     <div class="col-xl-4 col-lg-6 col-md-6">
         <a href="/processo/{{ processo.id }}" class="text-decoration-none text-dark">
             <div class="shadow px-2 pt-2 border-yellow border-start border-30">
                 <div class="border-bottom">
                     <h3 class="title">{{ processo.nome }}</h3>
-                    <p>{{ atualizacao.data_atualizacao }}</p>
                 </div>
-                <p class="py-2">{{ processo.tipo_processo }}</p>
+                <div class="d-flex text-secondary">
+                    <p class="me-1">{{ status.nome }}</p>
+                    <p>({{ atualizacao.data_atualizacao }})</p>
+                </div>
+                <p class="">{{ processo.tipo_processo }}</p>           
             </div>
         </a>
     </div>
 
-    {% elif status.id == 3 %}
+    {% elif status.nome == "Aprovado" %}
     <div class="col-xl-4 col-lg-6 col-md-6">
         <a href="/processo/{{ processo.id }}" class="text-decoration-none text-dark">
             <div class="shadow px-2 pt-2 border-green border-start border-30">
                 <div class="border-bottom">
                     <h3 class="title">{{ processo.nome }}</h3>
-                    <p>{{ atualizacao.data_atualizacao }}</p>
                 </div>
-                <p class="py-2">{{ processo.tipo_processo }}</p>
+                <div class="d-flex text-secondary">
+                    <p class="me-1">{{ status.nome }}</p>
+                    <p>({{ atualizacao.data_atualizacao }})</p>
+                </div>
+                <p class="">{{ processo.tipo_processo }}</p>      
             </div>
         </a>
     </div>
 
-    {% elif status.id == 4 %}
+    {% elif status.nome == "Não aprovado" %}
     <div class="col-xl-4 col-lg-6 col-md-6">
         <a href="/processo/{{ processo.id }}" class="text-decoration-none text-dark">
             <div class="shadow px-2 pt-2 border-red border-start border-30">
                 <div class="border-bottom">
                     <h3 class="title">{{ processo.nome }}</h3>
-                    <p>{{ atualizacao.data_atualizacao }}</p>
                 </div>
-                <p class="py-2">{{ processo.tipo_processo }}</p>
+                <div class="d-flex text-secondary">
+                    <p class="me-1">{{ status.nome }}</p>
+                    <p>({{ atualizacao.data_atualizacao }})</p>
+                </div>
+                <p class="">{{ processo.tipo_processo }}</p>      
             </div>
         </a>
     </div>
 
-    {% elif status.id == 5 %}
+    {% elif status.nome == "Devolvido" %}
     <div class="col-xl-4 col-lg-6 col-md-6">
         <a href="/processo/{{ processo.id }}" class="text-decoration-none text-dark">
             <div class="shadow px-2 pt-2 border-orange border-start border-30">
                 <div class="border-bottom">
                     <h3 class="title">{{ processo.nome }}</h3>
-                    <p>{{ atualizacao.data_atualizacao }}</p>
                 </div>
-                <p class="py-2">{{ processo.tipo_processo }}</p>
+                <div class="d-flex text-secondary">
+                    <p class="me-1">Existem pendências</p>
+                    <p>({{ atualizacao.data_atualizacao }})</p>
+                </div>
+                <p class="">{{ processo.tipo_processo }}</p>      
             </div>
         </a>
     </div>
@@ -65,9 +77,12 @@
             <div class="shadow px-2 pt-2 border-yellow border-start border-30">
                 <div class="border-bottom">
                     <h3 class="title">{{ processo.nome }}</h3>
-                    <p>{{ atualizacao.data_atualizacao }}</p>
                 </div>
-                <p class="py-2">{{ processo.tipo_processo }}</p>
+                <div class="d-flex text-secondary">
+                    <p class="me-1">{{ status.nome }}</p>
+                    <p>({{ atualizacao.data_atualizacao }})</p>
+                </div>
+                <p class="">{{ processo.tipo_processo }}</p>      
             </div>
         </a>
     </div>

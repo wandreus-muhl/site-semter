@@ -1,0 +1,29 @@
+<title>Cadastre-se</title>
+{% extends "base.html" %}
+{% block conteudo %}
+<div class="content">
+    <div class="form-title mb-16">
+        <h2>Redefinir senha</h2>
+    </div>
+    <div class="form mb-16">
+        <form method="POST" class="form">
+            <div class="form-group mb-16">
+                <label for="inputSenha" class="form-label mb-16"><i class="bi bi-lock-fill"></i> Senha:</label>
+                <input type="password" name="inputSenha" id="inputSenha" class="form-input" required>
+            </div>
+            <div class="form-group mb-16">
+                <label for="inputPasswordConfirm" class="form-label mb-16"><i class="bi bi-lock-fill"></i><i
+                        class="bi bi-check"></i> Repetir senha:</label>
+                <input type="password" name="inputConfirmarSenha" id="inputConfirmarSenha" class="form-input" required>
+            </div>
+            {% if mensagem %}
+            <div class="mb-16 text-red"><i class="bi bi-exclamation-circle"></i>
+                {{mensagem}}</div>
+            {% endif %}
+            <div>
+                <input type="submit" value="Redefinir" class="btn mb-16 w-100"></input>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

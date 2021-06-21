@@ -9,7 +9,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-logging.basicConfig(filename="access.log", format="%(asctime)s - %(levelname)s - %(message)s")
+logging.basicConfig(
+    filename="access.log", format="%(asctime)s - %(levelname)s - %(message)s"
+)
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = (
@@ -24,7 +26,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = (
 )
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SECRET_KEY"] = os.getenv("SECRET")
-app.config['UPLOAD_FOLDER'] = "./app/uploads"
+app.config["UPLOAD_FOLDER"] = "./app/uploads"
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db, compare_type=True)

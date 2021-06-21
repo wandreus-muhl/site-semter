@@ -3,7 +3,8 @@ from flask import render_template, redirect, url_for, request, session
 from flask_login import login_required, current_user
 from flask_login import login_user, logout_user
 from sqlalchemy import func
-import sys
+from datetime import date, datetime
+import sys, uuid
 from app.models.tables import (
     Pessoa,
     Processo,
@@ -43,14 +44,17 @@ def login():
             login_user(pessoa)
             usuario = pessoa.id
             servidor = Servidor.query.filter(Servidor.pessoa_id.like(usuario)).first()
-            contribuinte = Contribuinte.query.filter(Contribuinte.pessoa_id.like(usuario)).first()
+            contribuinte = Contribuinte.query.filter(
+                Contribuinte.pessoa_id.like(usuario)
+            ).first()
             if servidor:
                 return redirect("/analise_processo")
             if contribuinte:
                 return redirect("/home")
             else:
                 return redirect("/home")
-            
+
+
 @app.route("/cadastro", methods=["GET", "POST"])
 def cadastro():
     if request.method == "GET":
@@ -61,11 +65,18 @@ def cadastro():
         nome = request.form["inputName"]
         cpf = request.form["inputCPF"]
         email = request.form["inputEmail"]
+        
+        existe_email = Pessoa.query.filter_by(email=email).first()
+        if existe_email:
+            mensagem = "Email já cadastrado"
+            return render_template("cadastro.html", mensagem=mensagem)
+        
         if request.form["inputPassword"] == request.form["inputPasswordConfirm"]:
             senha = request.form["inputPassword"]
         else:
             mensagem = "As senhas não correspondem"
             return render_template("cadastro.html", mensagem=mensagem)
+        
         senhaEcriptada = bcrypt.hashpw(senha.encode("UTF-8"), bcrypt.gensalt())
         contato = request.form["inputPhone"]
         data_cadastro = datetime.now()
@@ -188,10 +199,15 @@ def listarProcessos():
             )
             .join(Processo, Processo.id == Atualizacao.processo_id)
             .join(Status, Status.id == Atualizacao.status_id)
+            .order_by(Status.id)
             .all()
         )
 
         if query:
+            for r in query:
+                r.Atualizacao.data_atualizacao = (
+                    r.Atualizacao.data_atualizacao.strftime("%d/%m/%Y - %H:%M")
+                )
             return render_template("home.html", query=query)
         else:
             mensagem = (
@@ -215,16 +231,51 @@ def listarProcessos():
     return render_template("home.html", processos=processos)
 
 
-@app.route("/")
-def pesquisa():
-    # nome = request.args.get("getUserID")
+@app.route("/esqueci_minha_senha", methods=["GET", "POST"])
+def esqueciSenha():
+    if request.method == "GET":
+        return render_template("esqueci_minha_senha.html")
 
-    # if usuario:
-    #     contribuinte = Contribuinte.query.filter(Contribuinte.pessoa_id.like(usuario)).first()
-    #     id_contribuinte = contribuinte.id
-    #     app.logger.info('O seguinte usuário tentou mostrar seus processos: '+ str(id_contribuinte))
+    if request.method == "POST":
+        email = request.form["inputEmail"]
+        token = str(uuid.uuid4())
+        existe_email = Pessoa.query.filter_by(email=email).first()
+        print(existe_email.token, file=sys.stderr)
 
-    #     processos = Processo.query.filter(Processo.contribuinte_id.like(id_contribuinte)).all()
-    # else:
-    #     processos = Processo.query.all()
-    return render_template("index.html")
+        if not existe_email:
+            mensagem = "Email não corresponde"
+            return render_template("esqueci_minha_senha.html", mensagem=mensagem)
+
+        else:
+            existe_email.token = token
+            db.session.commit()
+            mensagem = "Email de redefinição enviado"
+            return render_template("esqueci_minha_senha.html", mensagem=mensagem)
+
+
+@app.route("/redefinir/<token>", methods=["GET", "POST"])
+def redefinirSenha(token):
+    if request.method == "GET":
+        return render_template("redefinir_senha.html")
+
+    if request.method == "POST":
+        tokenAux = str(uuid.uuid4())
+        existe_usuario = Pessoa.query.filter_by(token=token).first()
+
+        if existe_usuario:
+            if request.form["inputSenha"] == request.form["inputConfirmarSenha"]:
+                senha = request.form["inputSenha"]
+                senha = bcrypt.hashpw(senha.encode("UTF-8"), bcrypt.gensalt())
+
+                existe_usuario.senha = senha
+                existe_usuario.token = tokenAux
+                db.session.commit()
+            else:
+                mensagem = "As senhas não correspondem"
+                return render_template("redefinir_senha.html", mensagem=mensagem)
+
+        else:
+            mensagem = "Token de redefinição inválido"
+            return render_template("erro.html", mensagem=mensagem)
+
+    return render_template("login.html")
