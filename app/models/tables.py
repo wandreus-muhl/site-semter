@@ -105,9 +105,7 @@ class Processo(db.Model):
     contribuinte_id = db.Column(
         db.Integer, db.ForeignKey("contribuintes.id"), nullable=False
     )
-    terreno_id = db.Column(
-        db.Integer, db.ForeignKey("terrenos.id"), nullable=False
-    ) 
+    terreno_id = db.Column(db.Integer, db.ForeignKey("terrenos.id"), nullable=False)
 
     def _repr_(self):
         return "<Processo %d>" % self.cod_processo
@@ -152,4 +150,3 @@ class CheckList(db.Model):
     ARTApresentado = db.Column(db.Boolean)
     memorialDescritivo = db.Column(db.Boolean)
     processo_id = db.Column(db.Integer, db.ForeignKey("processos.id"))
-

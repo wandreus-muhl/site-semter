@@ -17,7 +17,6 @@ from app.models.tables import (
     Status,
     Servidor,
     ArquivoProcesso,
-    CheckList,
     Atualizacao,
     Terreno,
 )
@@ -219,28 +218,7 @@ def cadastrar_processos():
                 processo_id=processo.id,
             )
 
-            checklist = CheckList(
-                processo_id=processo.id,
-                CNDPrefeitura=False,
-                CNDSAAE=False,
-                tituloImovel=False,
-                documentacaoEmpresa=False,
-                copiaRG=False,
-                copiaCPF=False,
-                copiaComprovanteResidencia=False,
-                procuracao=False,
-                plantaAssinada=False,
-                elementosCorretos=False,
-                dadosDimensoes=False,
-                proposta=False,
-                locacaoExistentes=False,
-                edificacaoAverbada=False,
-                ARTApresentado=False,
-                memorialDescritivo=False,
-            )
-
             db.session.add(a1)
-            db.session.add(checklist)
             db.session.add(atualizacao)
             db.session.commit()
 
@@ -364,11 +342,11 @@ def alterar_processo(id_processo):
             arquivos.tituloImovel = (arquivoTitulo.filename,)
         if arquivoCPF.filename:
             arquivos.copiaCPF = (arquivoCPF.filename,)
-        if arquivoComprovanteRest.filename: 
+        if arquivoComprovanteRest.filename:
             arquivos.copiaComprovanteResidencia = (arquivoComprovanteRest.filename,)
         if arquivoAnalise.filename:
             arquivos.projetoArt = (arquivoAnalise.filename,)
-            
+
         data = datetime.now()
         atualizacao = Atualizacao(
             data_atualizacao=data,
@@ -376,9 +354,9 @@ def alterar_processo(id_processo):
             processo_id=id_processo,
         )
         db.session.add(atualizacao)
-        
+
         processo.parecer = ""
-        
+
         db.session.commit()
         return redirect("/home")
     else:
@@ -486,7 +464,6 @@ def analise_de_processo(id_processo):
 
     if request.method == "POST":
         teste = request.form.getlist("aaa")
-        checklist = CheckList.query.filter_by(processo_id=id_processo).first()
         processo = Processo.query.filter_by(id=id_processo).first()
         if len(teste) == 5:
             status = 3
@@ -549,33 +526,3 @@ def recusar_processo(processo_id):
     processo.parecer = ""
     db.session.commit()
     return redirect("/analise_processo")
-
-
-# @app.route("/processo_analisado/<id_processo>/<status>", methods=["GET", "POST"])
-# @login_required
-# def processo_analisado(id_processo, status):
-#     checkBoxRequerimento = "checkBoxRequerimento" in request.form
-#     # checkBoxRequerimento = True
-#     checkBoxCNDPrefeitura = request.form.getlist("checkBoxCNDPrefeitura")
-#     selecionado = bool(checkBoxCNDPrefeitura)
-#     print(checkBoxRequerimento)
-#     print(selecionado)
-
-#     checklist = CheckList.query.filter_by(processo_id=id_processo).first()
-
-#     data_inicio = datetime.now()
-#     atualizacao = Atualizacao(
-#         data_atualizacao=data_inicio,
-#         status_id=status,
-#         processo_id=id_processo,
-#     )
-#     db.session.add(atualizacao)
-
-#     processo = Processo.query.filter_by(id=id_processo).first()
-#     processo.atualizacao_id = atualizacao.id
-#     checklist.requerimento = checkBoxRequerimento
-#     checklist.CNDPrefeitura = selecionado
-
-#     db.session.commit()
-
-#     return redirect("/analise_processo")
