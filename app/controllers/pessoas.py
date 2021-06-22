@@ -129,13 +129,40 @@ def cadastro_servidor():
 
     if request.method == "POST":
         nome = request.form["inputName"]
-        cpf = request.form["inputCPF"]
-        email = request.form["inputEmail"]
-        if request.form["inputPassword"] == request.form["inputPasswordConfirm"]:
-            senha = request.form["inputPassword"]
+        if len(nome) <= 3:
+            mensagem = "Seu nome completo deve conter ao menos 3 caracteres"
+            return render_template("cadastro.html", mensagem=mensagem)
+
+        cpf = CPF()
+        if cpf.validate(request.form["inputCPF"]):
+            existe_cpf = Pessoa.query.filter_by(cpf=request.form["inputCPF"]).first()
+            if existe_cpf:
+                mensagem = "CPF já cadastrado"
+                return render_template("cadastro.html", mensagem=mensagem)
+            else:
+                cpf = request.form["inputCPF"]
+
         else:
-            mensagem = "As senhas não correspondem"
-            return render_template("cadastro_servidor.html", mensagem=mensagem)
+            mensagem = "Insira um CPF válido"
+            return render_template("cadastro.html", mensagem=mensagem)
+
+        email = request.form["inputEmail"]
+        existe_email = Pessoa.query.filter_by(email=email).first()
+        if existe_email:
+            mensagem = "Email já cadastrado"
+            return render_template("cadastro.html", mensagem=mensagem)
+
+        if len(request.form["inputPassword"]) >= 8:
+            if request.form["inputPassword"] == request.form["inputPasswordConfirm"]:
+                senha = request.form["inputPassword"]
+            else:
+                mensagem = "As senhas não correspondem"
+                return render_template("cadastro.html", mensagem=mensagem)
+
+        else:
+            mensagem = "Sua senha deve conter ao menos 8 caracteres"
+            return render_template("cadastro.html", mensagem=mensagem)
+        
         senhaEcriptada = bcrypt.hashpw(senha.encode("UTF-8"), bcrypt.gensalt())
         contato = request.form["inputPhone"]
         matricula = request.form["inputMatricula"]
