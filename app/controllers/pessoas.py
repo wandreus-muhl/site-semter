@@ -162,7 +162,7 @@ def cadastro_servidor():
         else:
             mensagem = "Sua senha deve conter ao menos 8 caracteres"
             return render_template("cadastro.html", mensagem=mensagem)
-        
+
         senhaEcriptada = bcrypt.hashpw(senha.encode("UTF-8"), bcrypt.gensalt())
         contato = request.form["inputPhone"]
         matricula = request.form["inputMatricula"]
@@ -247,7 +247,7 @@ def listarProcessos():
             )
             .join(Processo, Processo.id == Atualizacao.processo_id)
             .join(Status, Status.id == Atualizacao.status_id)
-            .filter(Processo.contribuinte_id == current_user.id)
+            .filter(Processo.contribuinte_id == contribuinte.id)
             .order_by(Status.id)
             .all()
         )

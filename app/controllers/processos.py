@@ -471,7 +471,7 @@ def recusar_processo(processo_id):
     db.session.add(atualizacao)
     processo.parecer = ""
     db.session.commit()
-    return redirect("/home")
+    return redirect("/analise_processo")
 
 
 # @app.route("/processo_analisado/<id_processo>/<status>", methods=["GET", "POST"])
