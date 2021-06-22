@@ -197,7 +197,7 @@ def cadastro_servidor():
             mensagem = "Usuário não autorizado para cadastrar um Servidor"
             return render_template("cadastro_servidor.html", mensagem=mensagem)
 
-    return redirect("/home")
+    return redirect("/analise_processo")
 
 
 @app.route("/logout")

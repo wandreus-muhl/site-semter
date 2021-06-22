@@ -26,6 +26,13 @@ from werkzeug.utils import secure_filename
 import os, uuid, sys
 
 
+def gerar_nome_arquivo(arquivo):
+    extensaoArquivo = arquivo.filename.split(".")
+    extensaoArquivo = extensaoArquivo[len(extensaoArquivo) - 1]
+    arquivo.filename = str(uuid.uuid4()) + "." + extensaoArquivo
+    return arquivo
+
+
 @app.route("/", methods=["GET", "POST"])
 def index():
     if request.method == "GET":
@@ -138,9 +145,7 @@ def cadastrar_processos():
 
             arquivoRequerimento = request.files["inputRequerimento"]
             if arquivoRequerimento:
-                extensaoArquivo = arquivoRequerimento.filename.split(".")
-                extensaoArquivo = extensaoArquivo[len(extensaoArquivo) - 1]
-                arquivoRequerimento.filename = str(uuid.uuid4()) + "." + extensaoArquivo
+                gerar_nome_arquivo(arquivoRequerimento)
                 arquivoRequerimento.save(
                     os.path.join(
                         pastaNova, secure_filename(arquivoRequerimento.filename)
@@ -149,56 +154,42 @@ def cadastrar_processos():
 
             arquivoRG = request.files["inputCopiaRG"]
             if arquivoRG:
-                extensaoArquivo = arquivoRG.filename.split(".")
-                extensaoArquivo = extensaoArquivo[len(extensaoArquivo) - 1]
-                arquivoRG.filename = str(uuid.uuid4()) + "." + extensaoArquivo
+                gerar_nome_arquivo(arquivoRG)
                 arquivoRG.save(
                     os.path.join(pastaNova, secure_filename(arquivoRG.filename))
                 )
 
             arquivoCPF = request.files["inputCopiaCPF"]
             if arquivoCPF:
-                extensaoArquivo = arquivoCPF.filename.split(".")
-                extensaoArquivo = extensaoArquivo[len(extensaoArquivo) - 1]
-                arquivoCPF.filename = str(uuid.uuid4()) + "." + extensaoArquivo
+                gerar_nome_arquivo(arquivoCPF)
                 arquivoCPF.save(
                     os.path.join(pastaNova, secure_filename(arquivoCPF.filename))
                 )
 
             arquivoCertPref = request.files["inputCertidaoPrefeitura"]
             if arquivoCertPref:
-                extensaoArquivo = arquivoCertPref.filename.split(".")
-                extensaoArquivo = extensaoArquivo[len(extensaoArquivo) - 1]
-                arquivoCertPref.filename = str(uuid.uuid4()) + "." + extensaoArquivo
+                gerar_nome_arquivo(arquivoCertPref)
                 arquivoCertPref.save(
                     os.path.join(pastaNova, secure_filename(arquivoCertPref.filename))
                 )
 
             arquivoCertSAAE = request.files["inputCertidaoSAAE"]
             if arquivoCertSAAE:
-                extensaoArquivo = arquivoCertSAAE.filename.split(".")
-                extensaoArquivo = extensaoArquivo[len(extensaoArquivo) - 1]
-                arquivoCertSAAE.filename = str(uuid.uuid4()) + "." + extensaoArquivo
+                gerar_nome_arquivo(arquivoCertSAAE)
                 arquivoCertSAAE.save(
                     os.path.join(pastaNova, secure_filename(arquivoCertSAAE.filename))
                 )
 
             arquivoTitulo = request.files["inputTituloImovel"]
             if arquivoTitulo:
-                extensaoArquivo = arquivoTitulo.filename.split(".")
-                extensaoArquivo = extensaoArquivo[len(extensaoArquivo) - 1]
-                arquivoTitulo.filename = str(uuid.uuid4()) + "." + extensaoArquivo
+                gerar_nome_arquivo(arquivoTitulo)
                 arquivoTitulo.save(
                     os.path.join(pastaNova, secure_filename(arquivoTitulo.filename))
                 )
 
             arquivoComprovanteRest = request.files["inputComprovanteResidencia"]
             if arquivoComprovanteRest:
-                extensaoArquivo = arquivoComprovanteRest.filename.split(".")
-                extensaoArquivo = extensaoArquivo[len(extensaoArquivo) - 1]
-                arquivoComprovanteRest.filename = (
-                    str(uuid.uuid4()) + "." + extensaoArquivo
-                )
+                gerar_nome_arquivo(arquivoComprovanteRest)
                 arquivoComprovanteRest.save(
                     os.path.join(
                         pastaNova, secure_filename(arquivoComprovanteRest.filename)
@@ -207,9 +198,7 @@ def cadastrar_processos():
 
             arquivoAnalise = request.files["inputFileAnalises"]
             if arquivoAnalise:
-                extensaoArquivo = arquivoAnalise.filename.split(".")
-                extensaoArquivo = extensaoArquivo[len(extensaoArquivo) - 1]
-                arquivoAnalise.filename = str(uuid.uuid4()) + "." + extensaoArquivo
+                gerar_nome_arquivo(arquivoAnalise)
                 arquivoAnalise.save(
                     os.path.join(pastaNova, secure_filename(arquivoAnalise.filename))
                 )
@@ -279,7 +268,6 @@ def alterar_processo(id_processo):
     if processo.nome != nome:
         processo.nome = nome
         db.session.commit()
-        return redirect("/home")
     subquery = (
         db.session.query(
             db.func.max(Atualizacao.id).label("max_id"),
@@ -305,6 +293,82 @@ def alterar_processo(id_processo):
     )
 
     if not query:
+        pastaNova = "./app/uploads/" + str(processo.id)
+
+        arquivoRequerimento = request.files["inputRequerimento"]
+        if arquivoRequerimento:
+            gerar_nome_arquivo(arquivoRequerimento)
+            arquivoRequerimento.save(
+                os.path.join(pastaNova, secure_filename(arquivoRequerimento.filename))
+            )
+
+        arquivoRG = request.files["inputCopiaRG"]
+        if arquivoRG:
+            gerar_nome_arquivo(arquivoRG)
+            arquivoRG.save(os.path.join(pastaNova, secure_filename(arquivoRG.filename)))
+
+        arquivoCPF = request.files["inputCopiaCPF"]
+        if arquivoCPF:
+            gerar_nome_arquivo(arquivoCPF)
+            arquivoCPF.save(
+                os.path.join(pastaNova, secure_filename(arquivoCPF.filename))
+            )
+
+        arquivoCertPref = request.files["inputCertidaoPrefeitura"]
+        if arquivoCertPref:
+            gerar_nome_arquivo(arquivoCertPref)
+            arquivoCertPref.save(
+                os.path.join(pastaNova, secure_filename(arquivoCertPref.filename))
+            )
+
+        arquivoCertSAAE = request.files["inputCertidaoSAAE"]
+        if arquivoCertSAAE:
+            gerar_nome_arquivo(arquivoCertSAAE)
+            arquivoCertSAAE.save(
+                os.path.join(pastaNova, secure_filename(arquivoCertSAAE.filename))
+            )
+
+        arquivoTitulo = request.files["inputTituloImovel"]
+        if arquivoTitulo:
+            gerar_nome_arquivo(arquivoTitulo)
+            arquivoTitulo.save(
+                os.path.join(pastaNova, secure_filename(arquivoTitulo.filename))
+            )
+
+        arquivoComprovanteRest = request.files["inputComprovanteResidencia"]
+        if arquivoComprovanteRest:
+            gerar_nome_arquivo(arquivoComprovanteRest)
+            arquivoComprovanteRest.save(
+                os.path.join(
+                    pastaNova, secure_filename(arquivoComprovanteRest.filename)
+                )
+            )
+
+        arquivoAnalise = request.files["inputFileAnalises"]
+        if arquivoAnalise:
+            gerar_nome_arquivo(arquivoAnalise)
+            arquivoAnalise.save(
+                os.path.join(pastaNova, secure_filename(arquivoAnalise.filename))
+            )
+
+        arquivos = ArquivoProcesso.query.filter_by(processo_id=id_processo).first()
+        if arquivoRequerimento.filename:
+            arquivos.requerimento = (arquivoRequerimento.filename,)
+        if arquivoRG.filename:
+            arquivos.copiaRG = (arquivoRG.filename,)
+        if arquivoCertPref.filename:
+            arquivos.certidaoNegativaPrefeitura = (arquivoCertPref.filename,)
+        if arquivoCertSAAE.filename:
+            arquivos.certidaoNegativaSAAE = (arquivoCertSAAE.filename,)
+        if arquivoTitulo.filename:
+            arquivos.tituloImovel = (arquivoTitulo.filename,)
+        if arquivoCPF.filename:
+            arquivos.copiaCPF = (arquivoCPF.filename,)
+        if arquivoComprovanteRest.filename: 
+            arquivos.copiaComprovanteResidencia = (arquivoComprovanteRest.filename,)
+        if arquivoAnalise.filename:
+            arquivos.projetoArt = (arquivoAnalise.filename,)
+            
         data = datetime.now()
         atualizacao = Atualizacao(
             data_atualizacao=data,
@@ -312,11 +376,25 @@ def alterar_processo(id_processo):
             processo_id=id_processo,
         )
         db.session.add(atualizacao)
+        
+        processo.parecer = ""
+        
         db.session.commit()
         return redirect("/home")
-
     else:
-        return redirect("/")
+        mensagem = "Não é possível aterar este processo"
+        return render_template("erro.html", mensagem=mensagem)
+
+
+@app.route("/alterar_nome_processo/<id_processo>", methods=["POST"])
+@login_required
+def alterar_nome_processo(id_processo):
+    nome = request.form["inputName"]
+    processo = Processo.query.filter_by(id=id_processo).first()
+    if processo.nome != nome:
+        processo.nome = nome
+        db.session.commit()
+        return redirect("/home")
 
 
 @app.route("/processo/<id_processo>")
@@ -453,7 +531,7 @@ def analise_de_processo(id_processo):
                     mensagem=mensagem,
                 )
 
-        return redirect("/home")
+        return redirect("/analise_processo")
 
 
 @app.route("/processo/<processo_id>/recusar")
