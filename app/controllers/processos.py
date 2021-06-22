@@ -33,7 +33,6 @@ def index():
 
     if request.method == "POST":
         pesquisa = request.form["inputSearch"]
-        processo = Processo.query.filter_by(numero=pesquisa).first()
 
         subquery = (
             db.session.query(
@@ -53,7 +52,7 @@ def index():
             )
             .join(Processo, Processo.id == Atualizacao.processo_id)
             .join(Status, Status.id == Atualizacao.status_id)
-            .filter(Processo.id == pesquisa)
+            .filter(Processo.numero == pesquisa)
             .order_by(Status.id)
             .all()
         )
