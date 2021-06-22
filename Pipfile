@@ -12,6 +12,7 @@ flask-migrate = "*"
 pymysql = "*"
 python-dotenv = "*"
 bcrypt = "*"
+validate-docbr = "*"
 
 [dev-packages]
 

@@ -1,24 +1,26 @@
 {% extends "base.html" %}
 {% block conteudo %}
-    <h3 class="title">Análises pendentes</h3>
-    <div class="row g-2 mb-2 mt-3">
+    <h3 class="title mb-3">Análises pendentes</h3>
+    <div class="row mb-3 w-100">
         {% if mensagem %}
         <p>{{ mensagem }}</p>
         {% endif %}
-        {% for p in processos %}
-        <div class="col-6">
-            <a href="/processo/{{ p.id }}" class="text-decoration-none text-dark">
-            <div class="px-2 shadow border-start border-30 border-warning">
-                <div class="border-bottom">
-                    <h3 class="title">{{ p.nome }}</h3>
-                    <p>{{ p.data_inicio }}</p>
+        {% for atualizacao, processo, status in processos %}
+        <div class="col-xl-4 col-lg-6 col-md-6 mb-4">
+            <a href="/analise_processo/{{ processo.id }}" class="text-decoration-none text-dark">
+                <div class="shadow px-2 pt-2 border-yellow border-start border-30">
+                    <div class="border-bottom">
+                        <h3 class="title mb-1">{{ processo.numero }}</h3>
+                    </div>
+                    <div class="d-flex text-secondary my-1">
+                        <p class="me-1 m-0">{{ status.nome }}</p>
+                        <p class="m-0">({{ atualizacao.data_atualizacao }})</p>
+                    </div>
+                    <p class="m-0">{{ processo.tipo_processo }}</p>
                 </div>
-                <p>{{ p.tipo_processo }}</p>
-            
-                <a class="btn btn-primary" href="/analise_processo/{{ p.id }}" role="button">Analisar</a>
-            </div>
             </a>
         </div>
         {% endfor %}
     </div>
 {% endblock %}
+

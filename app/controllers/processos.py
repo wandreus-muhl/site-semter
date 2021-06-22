@@ -2,6 +2,7 @@ from app import app, db
 from flask import (
     render_template,
     redirect,
+    url_for,
     request,
     send_file,
     send_from_directory,
@@ -88,6 +89,18 @@ def cadastrar_processos():
             lote = request.form["inputLote"]
             quadra = request.form["inputQuadra"]
             setor = request.form["inputSetor"]
+            if (
+                (not tipo_processo)
+                or (not tipo_lote)
+                or (not rua)
+                or (not numero)
+                or (not bairro)
+                or (not lote)
+                or (not quadra)
+                or (not setor)
+            ):
+                mensagem = "Os campos marcados com '*' são obrigatórios"
+                return render_template("cadastro_processo.html", mensagem=mensagem)
 
             terreno = Terreno(
                 lote=lote,
@@ -264,9 +277,47 @@ def enviaArquivos(id_processo, arquivo):
 def alterar_processo(id_processo):
     nome = request.form["inputName"]
     processo = Processo.query.filter_by(id=id_processo).first()
-    processo.nome = nome
-    db.session.commit()
-    return redirect("/home")
+    if processo.nome != nome:
+        processo.nome = nome
+        db.session.commit()
+        return redirect("/home")
+    subquery = (
+        db.session.query(
+            db.func.max(Atualizacao.id).label("max_id"),
+            Atualizacao.processo_id,
+            Atualizacao.status_id,
+        )
+        .group_by(Atualizacao.processo_id)
+        .subquery()
+    )
+
+    query = (
+        db.session.query(Atualizacao, Processo, Status)
+        .join(
+            subquery,
+            Atualizacao.id == subquery.c.max_id,
+        )
+        .join(Processo, Processo.id == Atualizacao.processo_id)
+        .join(Status, Status.id == Atualizacao.status_id)
+        .filter(Processo.id == processo.id)
+        .filter((Status.nome == "Aprovado") | (Status.nome == "Não aprovado"))
+        .order_by(Status.id)
+        .all()
+    )
+
+    if not query:
+        data = datetime.now()
+        atualizacao = Atualizacao(
+            data_atualizacao=data,
+            status_id=1,
+            processo_id=id_processo,
+        )
+        db.session.add(atualizacao)
+        db.session.commit()
+        return redirect("/home")
+
+    else:
+        return redirect("/")
 
 
 @app.route("/processo/<id_processo>")
@@ -305,7 +356,28 @@ def analisar_processos():
             "O seguinte usuário tentou mostrar seus processos: " + str(id_servidor)
         )
 
-        processos = Processo.query.filter(Processo.servidor_id.like(id_servidor)).all()
+        subquery = (
+            db.session.query(
+                db.func.max(Atualizacao.id).label("max_id"),
+                Atualizacao.processo_id,
+                Atualizacao.status_id,
+            )
+            .group_by(Atualizacao.processo_id)
+            .subquery()
+        )
+
+        processos = (
+            db.session.query(Atualizacao, Processo, Status)
+            .join(
+                subquery,
+                Atualizacao.id == subquery.c.max_id,
+            )
+            .join(Processo, Processo.id == Atualizacao.processo_id)
+            .join(Status, Status.id == Atualizacao.status_id)
+            .filter((Status.nome == "Encaminhado") | (Status.nome == "Em análise"))
+            .order_by(Status.id)
+            .all()
+        )
         return render_template("lista_processo.html", processos=processos)
     else:
         mensagem = "Você não está autorizado a ver esta página"
@@ -323,44 +395,110 @@ def analise_de_processo(id_processo):
     status = Status.query.filter_by(id=atualizacoes.id).first()
     arquivo = ArquivoProcesso.query.filter_by(processo_id=id_processo).first()
     terreno = Terreno.query.filter_by(id=processo.terreno_id).first()
+    if request.method == "GET":
+        return render_template(
+            "analise_processo.html",
+            processo=processo,
+            arquivos=arquivos,
+            arquivo=arquivo,
+            analise=analise,
+            id_processo=id_processo,
+            status=status,
+            terreno=terreno,
+        )
 
-    return render_template(
-        "processo.html",
-        processo=processo,
-        arquivos=arquivos,
-        arquivo=arquivo,
-        analise=analise,
-        id_processo=id_processo,
-        status=status,
-        terreno=terreno,
-    )
+    if request.method == "POST":
+        teste = request.form.getlist("aaa")
+        checklist = CheckList.query.filter_by(processo_id=id_processo).first()
+        processo = Processo.query.filter_by(id=id_processo).first()
+        if len(teste) == 5:
+            status = 3
+
+            data = datetime.now()
+            atualizacao = Atualizacao(
+                data_atualizacao=data,
+                status_id=status,
+                processo_id=id_processo,
+            )
+            db.session.add(atualizacao)
+            processo.parecer = ""
+            processo.atualizacao_id = atualizacao.id
+            db.session.commit()
+
+        else:
+            if request.form["inputParecer"]:
+                status = 5
+                data = datetime.now()
+                atualizacao = Atualizacao(
+                    data_atualizacao=data,
+                    status_id=status,
+                    processo_id=id_processo,
+                )
+                db.session.add(atualizacao)
+                processo.parecer = request.form["inputParecer"]
+                db.session.commit()
+
+            else:
+                mensagem = (
+                    "Você precisa informar o motivo de estar devolvendo o processo"
+                )
+                return render_template(
+                    "analise_processo.html",
+                    processo=processo,
+                    arquivos=arquivos,
+                    arquivo=arquivo,
+                    analise=analise,
+                    id_processo=id_processo,
+                    status=status,
+                    terreno=terreno,
+                    mensagem=mensagem,
+                )
+
+        return redirect("/home")
 
 
-@app.route("/processo_analisado/<id_processo>/<status>", methods=["GET", "POST"])
+@app.route("/processo/<processo_id>/recusar")
 @login_required
-def processo_analisado(id_processo, status):
-    checkBoxRequerimento = 'checkBoxRequerimento' in request.form
-    #checkBoxRequerimento = True
-    checkBoxCNDPrefeitura = request.form.getlist('checkBoxCNDPrefeitura')
-    selecionado = bool(checkBoxCNDPrefeitura)
-    print(checkBoxRequerimento)
-    print(selecionado)
+def recusar_processo(processo_id):
+    processo = Processo.query.filter_by(id=processo_id).first()
 
-    checklist = CheckList.query.filter_by(processo_id=id_processo).first()
-
-    data_inicio = datetime.now()
+    data = datetime.now()
     atualizacao = Atualizacao(
-        data_atualizacao=data_inicio,
-        status_id=status,
-        processo_id=id_processo,
+        data_atualizacao=data,
+        status_id=4,
+        processo_id=processo.id,
     )
     db.session.add(atualizacao)
-
-    processo = Processo.query.filter_by(id=id_processo).first()
-    processo.atualizacao_id = atualizacao.id
-    checklist.requerimento = checkBoxRequerimento
-    checklist.CNDPrefeitura = selecionado
-
+    processo.parecer = ""
     db.session.commit()
+    return redirect("/home")
 
-    return redirect("/analise_processo")
+
+# @app.route("/processo_analisado/<id_processo>/<status>", methods=["GET", "POST"])
+# @login_required
+# def processo_analisado(id_processo, status):
+#     checkBoxRequerimento = "checkBoxRequerimento" in request.form
+#     # checkBoxRequerimento = True
+#     checkBoxCNDPrefeitura = request.form.getlist("checkBoxCNDPrefeitura")
+#     selecionado = bool(checkBoxCNDPrefeitura)
+#     print(checkBoxRequerimento)
+#     print(selecionado)
+
+#     checklist = CheckList.query.filter_by(processo_id=id_processo).first()
+
+#     data_inicio = datetime.now()
+#     atualizacao = Atualizacao(
+#         data_atualizacao=data_inicio,
+#         status_id=status,
+#         processo_id=id_processo,
+#     )
+#     db.session.add(atualizacao)
+
+#     processo = Processo.query.filter_by(id=id_processo).first()
+#     processo.atualizacao_id = atualizacao.id
+#     checklist.requerimento = checkBoxRequerimento
+#     checklist.CNDPrefeitura = selecionado
+
+#     db.session.commit()
+
+#     return redirect("/analise_processo")

@@ -4,6 +4,7 @@ from flask_login import login_required, current_user
 from flask_login import login_user, logout_user
 from sqlalchemy import func
 from datetime import date, datetime
+from validate_docbr import CPF
 import sys, uuid
 from app.models.tables import (
     Pessoa,
@@ -63,20 +64,40 @@ def cadastro():
 
     if request.method == "POST":
         nome = request.form["inputName"]
-        cpf = request.form["inputCPF"]
+        if len(nome) <= 3:
+            mensagem = "Seu nome completo deve conter ao menos 3 caracteres"
+            return render_template("cadastro.html", mensagem=mensagem)
+
+        cpf = CPF()
+        if cpf.validate(request.form["inputCPF"]):
+            existe_cpf = Pessoa.query.filter_by(cpf=request.form["inputCPF"]).first()
+            if existe_cpf:
+                mensagem = "CPF já cadastrado"
+                return render_template("cadastro.html", mensagem=mensagem)
+            else:
+                cpf = request.form["inputCPF"]
+
+        else:
+            mensagem = "Insira um CPF válido"
+            return render_template("cadastro.html", mensagem=mensagem)
+
         email = request.form["inputEmail"]
-        
         existe_email = Pessoa.query.filter_by(email=email).first()
         if existe_email:
             mensagem = "Email já cadastrado"
             return render_template("cadastro.html", mensagem=mensagem)
-        
-        if request.form["inputPassword"] == request.form["inputPasswordConfirm"]:
-            senha = request.form["inputPassword"]
+
+        if len(request.form["inputPassword"]) >= 8:
+            if request.form["inputPassword"] == request.form["inputPasswordConfirm"]:
+                senha = request.form["inputPassword"]
+            else:
+                mensagem = "As senhas não correspondem"
+                return render_template("cadastro.html", mensagem=mensagem)
+
         else:
-            mensagem = "As senhas não correspondem"
+            mensagem = "Sua senha deve conter ao menos 8 caracteres"
             return render_template("cadastro.html", mensagem=mensagem)
-        
+
         senhaEcriptada = bcrypt.hashpw(senha.encode("UTF-8"), bcrypt.gensalt())
         contato = request.form["inputPhone"]
         data_cadastro = datetime.now()
@@ -199,6 +220,7 @@ def listarProcessos():
             )
             .join(Processo, Processo.id == Atualizacao.processo_id)
             .join(Status, Status.id == Atualizacao.status_id)
+            .filter(Processo.contribuinte_id == current_user.id)
             .order_by(Status.id)
             .all()
         )
@@ -210,9 +232,7 @@ def listarProcessos():
                 )
             return render_template("home.html", query=query)
         else:
-            mensagem = (
-                "Você ainda não abriu nenhum processo. Clique no botão para começar."
-            )
+            mensagem = "Você ainda não abriu nenhum processo"
             return render_template("home.html", mensagem=mensagem)
     else:
         servidor = Servidor.query.filter(Servidor.pessoa_id.like(usuario)).first()

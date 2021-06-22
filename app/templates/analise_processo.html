@@ -2,14 +2,17 @@
 {% block conteudo %}
 <div class="row g-2 mb-2 mt-2 justify-content-center">
     <div class="col-lg-8 col-xs-8 col-md-10 card shadow">
+        <div class="card-title text-center mt-4">
+            <h1 class="h1 mt-2b title">Análise de processos</h1>
+        </div>
         <div class="card-body">
-            <form action="/alterar_processo/{{processo.id}}" method="POST" class="form" enctype="multipart/form-data">
+            <form action="/analise_processo/{{id_processo}}" method="POST" class="form" enctype="multipart/form-data">
                 <div class="row g-3 text-secondary d-flex flex-wrap row g-2">
                     <div class="col-xs-6 col-md-5">
                         <i class="bi bi-pencil-square"></i>
-                        <label for="inputName" class="form-label">Nome da requisição</label>
+                        <label for="inputName" class="form-label">Número do processo</label>
                         <input type="text" placeholder="Nome" name="inputName" id="inputName" class="form-control"
-                            value="{{processo.nome}}">
+                            value="{{processo.numero}}" readonly>
                     </div>
                     <div class="col-xs-6 col-md-4">
                         <i class="bi bi-input-cursor"></i>
@@ -102,75 +105,58 @@
                         ART/RRT</a>
                 </div>
 
-                {% if processo.parecer %}
                 <hr>
-                <div class="form-text text-danger mb-2"><i class="bi bi-exclamation-circle"></i>
-                    {{processo.parecer}}</div>
 
-                <div class="text-secondary">
-                    <i class="bi bi-file-earmark-arrow-up-fill"></i>
-                    <label for="inputFile" class="form-label">Requerimento*</label>
-                    <input type="file" class="form-control form-control-file" name="inputRequerimento"
-                        id="inputRequerimento">
+                <div class="card-title text-center mt-4">
+                    <h1 class="h2 mt-2b title">Validação de documentos</h1>
                 </div>
-                <div class="text-secondary mt-4">
-                    <i class="bi bi-file-earmark-arrow-up-fill"></i>
-                    <label for="inputFile" class="form-label">Cópia RG*</label>
-                    <input type="file" class="form-control form-control-file" name="inputCopiaRG" id="inputCopiaRG">
+                <div class="text-secondary mb-3">
+                    <div>
+                        <i class="bi bi-file-earmark-arrow-up-fill"></i>
+                        <label for="checkboxRequerimento" class="form-label">Requerimento</label>
+                        <input type="checkbox" name="aaa" value="teste">
+                    </div>
+                    <div>
+                        <i class="bi bi-file-earmark-arrow-up-fill"></i>
+                        <label for="checkboxCNDPrefeitura" class="form-label">Certidão Negativa Prefeitura</label>
+                        <input type="checkbox" name="aaa" value="teste1">
+                    </div>
+                    <div>
+                        <i class="bi bi-file-earmark-arrow-up-fill"></i>
+                        <label for="checkboxCNDSAAE" class="form-label">Certidão Negativa SAAE</label>
+                        <input type="checkbox" name="aaa" value="teste2">
+                    </div>
+                    <div>
+                        <i class="bi bi-file-earmark-arrow-up-fill"></i>
+                        <label for="checkboxTituloImovel" class="form-label">Título do Imóvel</label>
+                        <input type="checkbox" name="aaa" value="teste3">
+                    </div>
+                    <div>
+                        <i class="bi bi-file-earmark-arrow-up-fill"></i>
+                        <label for="checkboxDocumentacaoEmpresa" class="form-label">Documentação da Empresa</label>
+                        <input type="checkbox" name="aaa" value="teste4">
+                    </div>
+                    <div>
+                        <i class="bi bi-pen-fill"></i>
+                        <label for="checkboxDocumentacaoEmpresa" class="form-label">Parecer</label>
+                        <textarea class="form-control" aria-label="With textarea" name="inputParecer"></textarea>
+                    </div>
                 </div>
-                <div class="text-secondary mt-4">
-                    <i class="bi bi-file-earmark-arrow-up-fill"></i>
-                    <label for="inputFile" class="form-label">Cópia CPF*</label>
-                    <input type="file" class="form-control form-control-file" name="inputCopiaCPF" id="inputCopiaCPF">
-                </div>
-                <div class="text-secondary mt-4">
-                    <i class="bi bi-file-earmark-arrow-up-fill"></i>
-                    <label for="inputFile" class="form-label">Certidão Negativa da Prefeitura </label>
-                    <input type="file" class="form-control form-control-file" name="inputCertidaoPrefeitura"
-                        id="inputCertidaoPrefeitura">
-                </div>
-                <div class="text-secondary mt-4">
-                    <i class="bi bi-file-earmark-arrow-up-fill"></i>
-                    <label for="inputFile" class="form-label">Certidão Negativa do SAAE </label>
-                    <input type="file" class="form-control form-control-file" name="inputCertidaoSAAE"
-                        id="inputCertidaoSAAE">
-                </div>
-                <div class="text-secondary mt-4">
-                    <i class="bi bi-file-earmark-arrow-up-fill"></i>
-                    <label for="inputFile" class="form-label">Título do Imóvel*</label>
-                    <input type="file" class="form-control form-control-file" name="inputTituloImovel"
-                        id="inputTituloImovel">
-                </div>
-                <div class="text-secondary mt-4">
-                    <i class="bi bi-file-earmark-arrow-up-fill"></i>
-                    <label for="inputFile" class="form-label">Cópia do Comprovante de Residência*</label>
-                    <input type="file" class="form-control form-control-file" name="inputComprovanteResidencia"
-                        id="inputComprovanteResidencia">
-                </div>
-                <div class="text-secondary mt-4">
-                    <i class="bi bi-file-earmark-arrow-up-fill"></i>
-                    <label for="inputFileAnalises" class="form-label">Análise técnica*</label>
-                    <input type="file" class="form-control form-control-file" name="inputFileAnalises"
-                        id="inputFileAnalises">
-                </div>
-                <div class="text-secondary mt-4">
-                    <i class="bi bi-file-earmark-arrow-up-fill"></i>
-                    <label for="inputFileAnalises" class="form-label">Procuração</label>
-                    <input type="file" class="form-control form-control-file" name="inputProcuracao"
-                        id="inputProcuracao">
-                </div>
-
-                <div class="d-grid gap-2 col-8 mx-auto mt-4">
-                    <input type="submit" value="CONCLUÍDO"
-                        class="btn btn-blue-flag text-uppercase fs-5 text-light"></input>
-                </div>
+                {% if mensagem %}
+                <div class="text-danger"><i class="bi bi-exclamation-circle"></i>
+                    {{mensagem}}</div>
                 {% endif %}
-
+                <div class="d-grid gap-2 col-8 mx-auto mt-lg-5">
+                    <input type="submit" value="Concluir"
+                        class="btn btn-blue-flag text-light text-uppercase fs-5"></input>
+                </div>
+                <p class="h5 text-danger text-center">Deseja recusar esse processo? <a
+                        href="/processo/{{processo.id}}/recusar" class="text-blue-flag text-decoration-none">Clique
+                        aqui!</a></p>
             </form>
         </div>
     </div>
 </div>
-
 
 
 
@@ -180,10 +166,6 @@
         <div class="modal-content">
             <div class="ratio ratio-4x3 mb-2">
                 <iframe id="pdf" src="/processo/{{id_processo}}/arquivos/"></iframe>
-                <!-- /processo/11/arquivos/Reuniao_16_04_2021.pdf -->
-                <!-- Reunião 16_04_2021.pdf -->
-                <!-- /processo/11/arquivos/carteira-trabalho.pdf -->
-                <!-- carteira-trabalho.pdf  -->
             </div>
         </div>
     </div>
