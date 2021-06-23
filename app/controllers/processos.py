@@ -241,7 +241,6 @@ def enviaArquivos(id_processo, arquivo):
 @app.route("/alterar_processo/<id_processo>", methods=["POST"])
 @login_required
 def alterar_processo(id_processo):
-    nome = request.form["inputName"]
     processo = Processo.query.filter_by(id=id_processo).first()
     if processo.nome != nome:
         processo.nome = nome

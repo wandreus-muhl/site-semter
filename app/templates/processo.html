@@ -6,28 +6,28 @@
             <h1 class="h1 mt-2b title">Visualização de processo</h1>
         </div>
         <div class="card-body">
+            <form action="/alterar_nome_processo/{{processo.id}}" method="POST" class="form">
+                <div class="col mb-3">
+                    <i class="bi bi-pencil-square"></i>
+                    <label for="inputName" class="form-label">Nome da requisição</label>
+                    <div class="input-group">
+                        <input type="text" placeholder="Nome" name="inputName" id="inputName" class="form-control"
+                        value="{{processo.nome}}">
+                        <button class="btn border" type="submit">
+                            <i class="bi bi-save-fill"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
             <form action="/alterar_processo/{{processo.id}}" method="POST" class="form" enctype="multipart/form-data">
                 <div class="row g-3 text-secondary d-flex flex-wrap row g-2">
-                    <form action="/alterar_nome_processo/{{processo.id}}" method="POST" class="form">
-                        <div class="col-xs-6 col-md-5">
-                            <i class="bi bi-pencil-square"></i>
-                            <label for="inputName" class="form-label">Nome da requisição</label>
-                            <div class="input-group">
-                                <input type="text" placeholder="Nome" name="inputName" id="inputName" class="form-control"
-                                value="{{processo.nome}}">
-                                <button class="btn border" type="submit">
-                                    <i class="bi bi-save-fill"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                    <div class="col-xs-6 col-md-4">
+                    <div class="col-xs-6 col-md-6">
                         <i class="bi bi-input-cursor"></i>
                         <label for="inputKind" class="form-label">Natureza da requisição</label>
                         <input type="text" placeholder="Natureza do processo" class="form-control"
                             value="{{processo.tipo_processo}}" readonly>
                     </div>
-                    <div class="col-xs-6 col-md-3">
+                    <div class="col-xs-6 col-md-6">
                         <i class="bi bi-house-fill"></i>
                         <label for="inputType" class="form-label">Tipo de imóvel</label>
                         <input type="text" placeholder="Tipo de lote" class="form-control"
@@ -43,7 +43,7 @@
                     </div>
                     <div class="col-xs-6 col-md-3">
                         <i class="bi bi-house-door-fill"></i>
-                        <label for="inputNumber" class="form-label">Número do Imóvel</label>
+                        <label for="inputNumber" class="form-label">Número</label>
                         <input type="number" placeholder="Número" class="form-control" value="{{terreno.numero}}"
                             readonly>
                     </div>
@@ -55,12 +55,12 @@
                     </div>
                     <div class="col-xs-6 col-md-5">
                         <i class="bi bi-square-half"></i>
-                        <label for="inputNumber" class="form-label">Número do Lote</label>
+                        <label for="inputNumber" class="form-label">Lote</label>
                         <input type="text" placeholder="Lote" class="form-control" value="{{terreno.lote}}" readonly>
                     </div>
                     <div class="col-xs-6 col-md-3">
                         <i class="bi bi-square-fill"></i>
-                        <label for="inputNumber" class="form-label">Número da Quadra</label>
+                        <label for="inputNumber" class="form-label">Quadra</label>
                         <input type="number" placeholder="Quadra" class="form-control" value="{{terreno.quadra}}"
                             readonly>
                     </div>
