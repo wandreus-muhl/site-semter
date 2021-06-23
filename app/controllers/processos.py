@@ -62,6 +62,10 @@ def index():
             .order_by(Status.id)
             .all()
         )
+        for r in query:
+            r.Atualizacao.data_atualizacao = r.Atualizacao.data_atualizacao.strftime(
+                "%d/%m/%Y - %H:%M"
+            )
         if not query:
             mensagem = "Não há processos correspondentes com a pesquisa"
             return render_template("index.html", mensagem=mensagem)
@@ -432,6 +436,10 @@ def analisar_processos():
             .order_by(Status.id)
             .all()
         )
+        for r in processos:
+            r.Atualizacao.data_atualizacao = r.Atualizacao.data_atualizacao.strftime(
+                "%d/%m/%Y - %H:%M"
+            )
         return render_template("lista_processo.html", processos=processos)
     else:
         mensagem = "Você não está autorizado a ver esta página"
