@@ -246,9 +246,9 @@ def enviaArquivos(id_processo, arquivo):
 @login_required
 def alterar_processo(id_processo):
     processo = Processo.query.filter_by(id=id_processo).first()
-    if processo.nome != nome:
-        processo.nome = nome
-        db.session.commit()
+    # if processo.nome != request.form["inputName"]:
+    #     processo.nome = nome
+    #     db.session.commit()
     subquery = (
         db.session.query(
             db.func.max(Atualizacao.id).label("max_id"),
